@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*{-webkit-tap-highlight-color:transparent;box-sizing:border-box}body{margin:0;user-select:none;-webkit-user-select:none}[hidden]{display:none!important}</style>
-<title>Người Que Săn Đồ</title>
+<title>Bảo Khí Truyền Kỳ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
@@ -443,7 +443,7 @@ i.gem{display:inline-block;width:12px;height:12px;transform:rotate(45deg) scale(
 <div class="toast" id="toast" hidden></div>
 <div class="redfx" id="redfx" hidden></div>
 <div class="intro" id="intro"><div class="in"><canvas id="introcv" aria-hidden="true"></canvas>
-  <div class="logo">Người Que<br>Săn Đồ<small>TREO MÁY · SĂN ĐỒ ĐỎ</small></div>
+  <div class="logo">Bảo Khí<br>Truyền Kỳ<small>TREO MÁY · SĂN ĐỒ ĐỎ</small></div>
   <div id="introBody" style="width:100%;display:grid;justify-items:center"></div>
   <span class="ver">bản thử 0.5</span></div></div>
 <div id="tut" hidden><div class="tutr" id="tutR"></div><svg class="tuth" id="tutH" viewBox="0 0 48 48" aria-hidden="true"><path d="M17 44c-3-4-9-11-10-14-1-2 1-4 3-3l5 4V8c0-3 5-3 5 0v13-4c0-3 5-3 5 0v5-3c0-3 5-3 5 0v4-2c0-3 5-3 5 0v12c0 6-3 9-5 11z" fill="#fff" stroke="#2b1609" stroke-width="2.6" stroke-linejoin="round"/></svg>
@@ -2074,7 +2074,7 @@ function renderWin(){
     if(!ar.opp||!ar.opp.length)ar.opp=makeOpp();
     b.innerHTML=`<div class="bl me"><div class="face" style="background:${cls().c}">${ar.rank}</div><div><h4>Bạn · hạng ${ar.rank}</h4><p>${cls().n} · lực chiến ${nf(S.power)}</p><p>Thắng ${ar.win} · thua ${ar.lose}</p></div><span></span></div>
       <div class="sec"><h3>Chọn đối thủ<span>lượt hôm nay: ${left}/${PVP_MAX}</span></h3>
-      <p class="muted">Đối thủ là người que do máy điều khiển, cũng dùng 3 kỹ năng của lớp mình. Thắng người hạng cao hơn thì lấy hạng của họ và nhận 10 ngọc. Hết 60 giây thì ai còn nhiều máu hơn thắng.</p>
+      <p class="muted">Đối thủ là cao thủ do máy điều khiển, cũng dùng 3 kỹ năng của lớp mình. Thắng người hạng cao hơn thì lấy hạng của họ và nhận 10 ngọc. Hết 60 giây thì ai còn nhiều máu hơn thắng.</p>
       ${ar.opp.map((o,j)=>{const C=CLS[o.cls];return `<div class="bl"><div class="face" style="background:${C.c}">${o.rank}</div>
         <div><h4>${o.n}</h4><p>${C.n} · lực chiến ${nf(o.pow)}</p><p style="color:${o.f<.95?'#2f7a12':o.f>1.05?'#b3261b':'#a86200'}">${o.f<.95?'Dễ':o.f>1.05?'Khó':'Ngang sức'}</p></div>
         <button class="btn orange" data-pvp="${j}" ${left>0?'':'disabled'}>Đánh</button></div>`}).join('')}
@@ -2151,7 +2151,7 @@ function renderWin(){
       row(UI.tower,'Tháp thử thách','Đã qua tầng '+(G.tower||0)+'. Không giới hạn lượt.','thap','Leo')+
       row(UI.wb,'Trùm thế giới',alive+'/'+WB.length+' trùm đang sống. Máu trùm giữ lại giữa các lần đánh.','wb')+
       row(UI.boss,'Ải trùm','Còn '+(TRUM_MAX-d2.trum)+'/'+TRUM_MAX+' lượt hôm nay.','trum')+
-      row(UI.relic,'Bảng xếp hạng','Xếp lực chiến với 50 người que. Nhận ngọc mỗi ngày theo hạng.','bxh','Xem')+
+      row(UI.relic,'Bảng xếp hạng','Xếp lực chiến với 50 cao thủ. Nhận ngọc mỗi ngày theo hạng.','bxh','Xem')+
       row(UI.pvp,'Đấu trường','Hạng '+G.arena.rank+' · còn '+(PVP_MAX-d2.pvp)+'/'+PVP_MAX+' lượt.','dau')+
       row(UI.afk,'Treo máy','Tắt game vẫn đánh, tối đa '+afkMax()+' giờ.','afk','Xem')+
       `<div class="hub" style="opacity:.6"><span class="o">${gsvg(UI.guild)}</span><div><h4>Bang hội</h4><p>Cần máy chủ để chơi cùng người thật. Sắp có.</p></div><span></span></div>`;
@@ -2496,7 +2496,7 @@ function start(data){
   if(G.tut==null)G.tut=chua?0:-1;
   daily();week();refresh();
   renderFrame();renderSkills();resize();spawn();renderTop();
-  log('Hệ thống','Chào mừng đến Người Que Săn Đồ','#ffd34d');
+  log('Hệ thống','Chào mừng đến Bảo Khí Truyền Kỳ','#ffd34d');
   requestAnimationFrame(frame);
   setInterval(tickSkills,100);
   setInterval(()=>{if(!document.hidden)save();if(G.daily.date!==today())dirty=1},5000);
