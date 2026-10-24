@@ -304,6 +304,37 @@ svg.gi{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 0 rgba(0,0,
 i.gem{display:inline-block;width:12px;height:12px;transform:rotate(45deg) scale(.85);border-radius:3px;margin-right:6px;vertical-align:-1px;border:1px solid #0006;
   background:radial-gradient(circle at 35% 30%,#fff,var(--gc) 55%,color-mix(in srgb,var(--gc) 50%,#000))}
 .bl canvas{display:block;width:52px;height:52px;border-radius:10px;background:radial-gradient(circle at 50% 40%,#fff6e0,#e7d09f)}
+/* đồ Đỏ rơi: màn vàng, tia sáng xoay, chữ to */
+.redfx{position:fixed;inset:0;z-index:58;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,200,60,.55),rgba(60,0,0,.85) 70%);overflow:hidden;animation:rfin .25s ease-out}
+.redfx::before{content:"";position:absolute;width:220vmax;height:220vmax;left:50%;top:50%;margin:-110vmax 0 0 -110vmax;
+  background:repeating-conic-gradient(rgba(255,230,120,.35) 0 8deg,transparent 8deg 22deg);animation:spin 8s linear infinite}
+.redfx .rc{position:relative;display:grid;justify-items:center;gap:8px;text-align:center;padding:0 20px}
+.redfx h2{margin:0;font-family:var(--f-disp);font-weight:800;font-size:clamp(46px,15vw,72px);line-height:1;color:#ffe14d;
+  text-shadow:0 4px 0 #8a0a0a,3px 3px 0 #2b0505,-3px -3px 0 #2b0505,3px -3px 0 #2b0505,-3px 3px 0 #2b0505,0 0 30px #ff3d3d;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+.redfx .cell{width:96px;animation:pop .6s .1s cubic-bezier(.2,1.6,.4,1) both;box-shadow:0 0 30px #ff3d3d}
+.redfx b{font-family:var(--f-disp);font-size:22px;color:#fff;text-shadow:0 2px 0 #000}
+.redfx span{color:#ffd0d0;font-weight:600;text-shadow:0 1px 2px #000}
+.redfx small{color:#fff9;margin-top:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.2);opacity:0}100%{transform:none;opacity:1}}
+@keyframes rfin{from{opacity:0}}
+.namebox{position:relative}
+.powup{position:absolute;left:8px;top:-4px;font-family:var(--f-disp);font-weight:800;font-size:15px;color:#7dff5a;text-shadow:0 1px 0 #000,0 0 6px #000;pointer-events:none;animation:powup 1.3s ease-out forwards;white-space:nowrap;z-index:5}
+@keyframes powup{0%{transform:translateY(8px);opacity:0}15%{opacity:1}100%{transform:translateY(-26px);opacity:0}}
+/* thiên phú */
+.tal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tal h4{margin:0;text-align:center;font-family:var(--f-disp);font-size:15px;color:var(--tc)}
+.tal .col{display:grid;gap:6px;align-content:start}
+.tn{border-radius:8px;padding:5px 4px;background:var(--parch2);border:2px solid var(--tc);color:var(--ink);font-size:11px;line-height:1.25;display:grid;gap:1px}
+.tn b{font-family:var(--f-disp);font-size:13px}
+.tn em{font-style:normal;font-weight:700;color:var(--tc)}
+.tn:disabled{border-style:dashed;opacity:.55}
+.tn.full{background:color-mix(in srgb,var(--tc) 22%,var(--parch))}
+.lad{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:5px 8px;border-radius:6px;font-variant-numeric:tabular-nums}
+.lad:nth-child(odd){background:var(--parch2)}
+.lad b{font-family:var(--f-disp);font-size:16px;text-align:center}
+.lad.me{background:#ffe9b8;border:2px solid #e0a020}
+.lad em{font-style:normal;font-family:var(--f-disp);font-weight:700}
 /* màn mở đầu */
 .intro{position:fixed;inset:0;z-index:60;display:flex;justify-content:center;background:#120a05}
 .intro .in{position:relative;width:100%;max-width:480px;height:100%;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
@@ -401,6 +432,7 @@ i.gem{display:inline-block;width:12px;height:12px;transform:rotate(45deg) scale(
 </div>
 <div class="sheet" id="sheet" hidden><div class="pane" id="pane" role="dialog" aria-modal="true"></div></div>
 <div class="toast" id="toast" hidden></div>
+<div class="redfx" id="redfx" hidden></div>
 <div class="intro" id="intro"><div class="in"><canvas id="introcv" aria-hidden="true"></canvas>
   <div class="logo">Người Que<br>Săn Đồ<small>TREO MÁY · SĂN ĐỒ ĐỎ</small></div>
   <div id="introBody" style="width:100%;display:grid;justify-items:center"></div>
@@ -416,7 +448,7 @@ const RAR=[
   {n:'Tím',c:'#9a52e0',w:10,lines:3,m:1.45,q:'Huyền'},
   {n:'Cam',c:'#f08a1c',w:5,lines:4,m:1.85,q:'Hoàng Kim'},
   {n:'Hồng',c:'#f0559e',w:3,lines:5,m:2.3,q:'Thiên Hồ'},
-  {n:'Đỏ',c:'#e8322f',w:1,lines:6,m:2.9,q:''},
+  {n:'Đỏ',c:'#e8322f',w:.35,lines:6,m:2.9,q:''},
 ];
 const PRAY_W=[30,26,20,14,6.5,2.5,1], PITY=100, SALV=[1,2,4,8,16,32,64], BAG_MAX=40;
 const REGIONS=['Làng Tre','Rừng Trúc','Đầm Sương','Hang Đá Vôi','Núi Lửa','Thành Cổ','Ma Giới'];
@@ -459,6 +491,9 @@ const CLS={
 // mỗi cấp nhân vật cộng thêm chỉ số gốc theo lớp
 const GROW={cb:{atk:1.8,def:1.4,hp:18},ct:{atk:2,def:.8,hp:11},ps:{atk:2.6,def:.6,hp:10}};
 const expNeed=lv=>Math.round(50+30*lv**2.5);
+// sức quái theo ải: máu và công tăng theo cấp số nhân (chỉnh ở đây để cân bằng, xem can_bang.py)
+const MH=1.16,MA=1.13;
+const MHP=k=>40*MH**(k-1),MATK=k=>6*MA**(k-1);
 const expKill=boss=>Math.round(6*1.13**(G.stage-1))*(boss?5:1);
 // ải trùm: trận riêng 60 giây, cần đủ lực chiến, 3 lượt mỗi ngày
 const BOSSES=[
@@ -573,7 +608,8 @@ const fullName=it=>(it.plus?'+'+it.plus+' ':'')+it.name;
 const slotIcon=si=>si===0&&WICON[G.cls]?WICON[G.cls]:ICON[si];
 
 function calc(eq){
-  const s={...cls().base,ls:0,gold:0,find:0,atkP:0,defP:0,hpP:0,dragon:0,dr:0,skP:0,cdr:0,dbl:0};
+  const s={...cls().base,ls:0,gold:0,find:0,atkP:0,defP:0,hpP:0,dragon:0,dr:0,skP:0,cdr:0,dbl:0,expP:0,afkP:0,afkH:0};
+  TAL.forEach((T,b)=>T.nodes.forEach(([k,v],i)=>{const r=talR(b,i);if(r)s[k]+=v*r}));
   const L=(G.lv||1)-1,gr=GROW[G.cls||'cb'];s.atk+=L*gr.atk;s.def+=L*gr.def;s.hp+=L*gr.hp;
   const sets={};
   for(const it of eq)if(it){s[SLOTS[it.si].main]+=mainVal(it);for(const [k,v] of it.aff)s[k]+=v;if(it.sk)sets[it.sk]=(sets[it.sk]||0)+1;
@@ -711,6 +747,31 @@ const WB=[
 const wbState=i=>{G.wb[i]=G.wb[i]||{hp:1,next:0};return G.wb[i]};
 const wbAlive=i=>Date.now()>=wbState(i).next;
 const canWb=()=>WB.some((B,i)=>wbAlive(i)&&S.power>=B.cp);
+
+
+/* ---------- cây thiên phú 3 nhánh: từ cấp 10 mỗi cấp được 1 điểm (người dùng 24/10: không làm chuyển sinh) ---------- */
+const TAL=[
+  {n:'Sát Thần',c:'#e8322f',nodes:[['atkP',3,'Công',1],['crit',1,'Chí mạng',1],['cdmg',6,'ST chí mạng',1],['spd',3,'Tốc đánh',1],['skP',6,'ST kỹ năng',1]]},
+  {n:'Bất Diệt',c:'#3d8ee6',nodes:[['hpP',4,'Máu',1],['defP',4,'Thủ',1],['ls',.6,'Hút máu',1],['dr',1.5,'Giảm ST nhận',1],['cdr',2,'Hồi chiêu nhanh',1]]},
+  {n:'Phú Quý',c:'#e0a020',nodes:[['gold',6,'Vàng nhận',1],['find',3,'Tìm đồ hiếm',1],['expP',6,'Kinh nghiệm',1],['afkP',8,'Thưởng treo máy',1],['afkH',1,'Giờ treo máy',0]]},
+];
+const TAL_MAX=5;
+const talR=(b,i)=>(G.tal||{})[b+'-'+i]||0;
+const talSum=b=>TAL[b].nodes.reduce((a,_,i)=>a+talR(b,i),0);
+const talOpen=(b,i)=>talSum(b)>=i*3;
+const TAL_LV=10;
+const talPts=()=>Math.max(0,G.lv-TAL_LV+1)-Object.values(G.tal||{}).reduce((a,v)=>a+v,0);
+const afkMax=()=>AFK_MAX+(S?S.afkH:0);
+const canTal=()=>talPts()>0;
+
+/* ---------- bảng xếp hạng lực chiến: 50 người que máy, mạnh dần theo ngày ---------- */
+function ladder(){
+  const days=(Date.now()-G.born)/864e5,gr=1+.04*days,R=rng(777),L=[];
+  for(let i=0;i<50;i++){const a=R(),b=R(),c=R(),d=R();L.push({n:NAMES[Math.floor(a*NAMES.length)]+(i%3?'':' '+(10+Math.floor(b*89))),cls:['cb','ct','ps'][Math.floor(c*3)],pow:Math.round(400*1.115**(49-i)*gr*(.95+d*.1))})}
+  L.push({me:1,n:G.name||cls().n,cls:G.cls,pow:S.power});L.sort((a,b)=>b.pow-a.pow);return L;
+}
+const rankGift=r=>r<=1?300:r<=3?200:r<=10?120:r<=30?60:20;
+const canBxh=()=>G.bxhDay!==today();
 
 /* ---------- linh thạch khảm vào đồ: 4 màu, cấp 1-10, 3 viên cùng cấp ghép thành 1 viên cấp sau ---------- */
 const LT={
@@ -854,16 +915,17 @@ let dpr=1,W=0,H=0,S=null,hero,mon,fx=[],texts=[],flash=0,clock=0,dirty=1;
 function resize(){dpr=Math.min(2,window.devicePixelRatio||1);const r=$('arena').getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr}
 // quái theo vùng: mỗi 10 ải một vùng, quái thứ 5 là trùm ải (to hơn, đội vương miện)
 function spawn(){
-  const boss=G.kill===4,rb=boss&&G.stage%10===0,base=40*1.2**(G.stage-1),ty=REG_MON[curReg()],sp=MT[ty];
-  mon={max:rb?base*10:boss?base*4:base,atk:6*1.16**(G.stage-1)*(rb?2:boss?1.6:1),boss,big:rb?1:0,rb,hit:0,dead:0,burn:0,bt:0,stun:0,
+  const boss=G.kill===4,rb=boss&&G.stage%10===0,base=MHP(G.stage-1),ty=REG_MON[curReg()],sp=MT[ty];
+  mon={max:rb?base*10:boss?base*4:base,atk:MATK(G.stage-1)*(rb?2:boss?1.6:1),boss,big:rb?1:0,rb,hit:0,dead:0,burn:0,bt:0,stun:0,
     ty,col:sp.c[Math.floor((G.stage-1)/3)%sp.c.length],name:(rb?'Chúa ':boss?'Vua ':'')+sp.n,seed:Math.random()*9,enter:ENTER,tr:1,lunge:0};
   mon.hp=mon.max;
   if(rb){sfx('boss');vib(80);banner('CHÚA VÙNG XUẤT HIỆN',REGIONS[curReg()]+' · ải '+G.stage,'#ff3d3d',2.2)}
   else if(boss){sfx('boss');banner('TRÙM XUẤT HIỆN','Ải '+G.stage+' · '+mon.name,'#ff5a4a')}
 }
 function refresh(){
-  const ratio=hero&&hero.max?hero.hp/hero.max:1;
+  const ratio=hero&&hero.max?hero.hp/hero.max:1,old=S?S.power:null;
   S=calc(G.eq);
+  if(old!=null&&S.power>old&&!introOn)powUp(S.power-old);
   if(!hero)hero={hp:S.hp,max:S.hp,cd:0,mcd:1.6,lunge:0,war:0,shield:0,atk:-1,run:null,hurt:0};
   hero.max=S.hp;hero.hp=Math.max(1,S.hp*ratio);
 }
@@ -881,12 +943,12 @@ function hit(mult,o={}){
   const [x,y]=monMid(),u=U();
   say(x+(Math.random()*24-12)*u/1.6,barY()-18*u,nf(d),o.c||null,kind==='crit'||kind==='dragon'?24:kind==='skill'?21:kind==='burn'?12:16,kind);
   if(!o.nocrit)burst(x-6*u,y,kind==='dmg'?6:12,kind==='crit'?'#ffd34d':kind==='dragon'?'#ff5a5a':o.c||'#ffffff',{sp:kind==='dmg'?120:180,k:'ln',g:0,up:0,life:.3});
-  if(kind==='crit'||kind==='dragon')shake=Math.max(shake,5);
+  if(kind==='crit'||kind==='dragon'){shake=Math.max(shake,5);hitStop=Math.max(hitStop,kind==='dragon'?.07:.04)}
   if(kind==='dragon')vfx.push({ty:'ring',t:0,life:.4,x,y,c:'#ff3d3d'});
   if(mon.hp<=0){if(fight)endFight(true);else kill()}
 }
 function gainExp(n,quiet){
-  G.exp=(G.exp||0)+n;let up=0;
+  n=Math.round(n*(1+(S?S.expP:0)/100));G.exp=(G.exp||0)+n;let up=0;
   while(G.exp>=expNeed(G.lv)){G.exp-=expNeed(G.lv);G.lv++;up++}
   if(up){refresh();hero.hp=hero.max;if(!quiet){sfx('lvup');vib(60);toast('Lên cấp '+G.lv+'! Công, Thủ, Máu tăng','#9be36a');log('Cấp','Lên cấp '+G.lv,'#b6f08a');
     vfx.push({ty:'lvup',t:0,life:1.2,c:'#ffe680'});burst(HX(),GY()-20*U(),24,'#ffe680',{sp:120,g:-80,life:.9});banner('LÊN CẤP '+G.lv,'Công, Thủ, Máu tăng','#9be36a',1.6)}}
@@ -904,7 +966,7 @@ function startTrum(i){
   if(S.power<B.cp)return toast('Cần lực chiến '+nf(B.cp)+', bạn đang có '+nf(S.power),'#ff6b6b');
   if(d.trum>=TRUM_MAX)return toast('Hết lượt ải trùm hôm nay, mai quay lại','#ff6b6b');
   d.trum++;
-  mon={max:40*1.2**(B.lv-1)*10,atk:6*1.16**(B.lv-1)*1.8,boss:1,big:1,name:B.n,col:B.c,ty:B.ty,hit:0,dead:0,burn:0,bt:0,stun:0,seed:0,enter:ENTER,tr:1,lunge:0};
+  mon={max:MHP(B.lv-1)*10,atk:MATK(B.lv-1)*1.8,boss:1,big:1,name:B.n,col:B.c,ty:B.ty,hit:0,dead:0,burn:0,bt:0,stun:0,seed:0,enter:ENTER,tr:1,lunge:0};
   mon.hp=mon.max;enterFight('trum',{i});log('Ải trùm','Khiêu chiến '+B.n,'#ffd34d');banner('ẢI TRÙM',B.n+' · cấp '+B.lv,'#ff6b4a');
 }
 function makeOpp(){
@@ -927,7 +989,7 @@ function startPvp(j){
 function startThap(){
   if(fight)return;
   const f=(G.tower||0)+1,e=towerEq(f),big=f%5===0,ty=big?BOSSES[(f/5-1)%BOSSES.length].ty:REG_MON[f%7],sp=MT[ty];
-  mon={max:40*1.2**(e-1)*(big?14:6),atk:6*1.16**(e-1)*(big?1.9:1.4),boss:1,big:big?1:0,name:(big?'Chúa Tháp ':'')+sp.n,col:big?'#e8322f':sp.c[f%sp.c.length],ty,
+  mon={max:MHP(e-1)*(big?14:6),atk:MATK(e-1)*(big?1.9:1.4),boss:1,big:big?1:0,name:(big?'Chúa Tháp ':'')+sp.n,col:big?'#e8322f':sp.c[f%sp.c.length],ty,
     hit:0,dead:0,burn:0,bt:0,stun:0,seed:0,enter:ENTER,tr:1,lunge:0};
   mon.hp=mon.max;enterFight('thap',{f});log('Tháp','Leo tầng '+f,'#8fe3ff');banner('THÁP THỬ THÁCH','Tầng '+f+(big?' · Chúa Tháp':''),'#8fe3ff');
 }
@@ -936,8 +998,8 @@ function startWb(i){
   if(fight)return;
   if(!wbAlive(i))return toast(B.n+' chưa hồi sinh','#ff6b6b');
   if(S.power<B.cp)return toast('Cần lực chiến '+nf(B.cp)+', bạn đang có '+nf(S.power),'#ff6b6b');
-  const max=40*1.2**(B.lv-1)*40;
-  mon={wb:1,max,atk:6*1.16**(B.lv-1)*2,boss:1,big:1,name:B.n,col:B.c,ty:B.ty,hit:0,dead:0,burn:0,bt:0,stun:0,seed:0,enter:ENTER,tr:1,lunge:0};
+  const max=MHP(B.lv-1)*40;
+  mon={wb:1,max,atk:MATK(B.lv-1)*2,boss:1,big:1,name:B.n,col:B.c,ty:B.ty,hit:0,dead:0,burn:0,bt:0,stun:0,seed:0,enter:ENTER,tr:1,lunge:0};
   mon.hp=max*st.hp;mon.tr=st.hp;prog('wbf');enterFight('wb',{i});log('Trùm thế giới','Đánh '+B.n,'#ff9a33');banner('TRÙM THẾ GIỚI',B.n+' · còn '+Math.ceil(st.hp*100)+'% máu','#ff9a33');
 }
 function endFight(win,why){
@@ -973,14 +1035,14 @@ function showEnd(win,title,msg,items=[],btn){
 }
 /* ---------- treo máy: tắt game vẫn đánh ở ải đang đứng, 70% tốc độ, tối đa 12 giờ ---------- */
 function afkRate(){
-  const hp=40*1.2**(G.stage-1),dps=S.atk*(1+S.crit/100*(S.cdmg/100-1))*(1+S.spd/100)*1.3;
-  const kph=3600/(hp/dps+.5)*.7;
-  return {kph,gold:kph*8*1.12**G.stage*(1+S.gold/100),exp:kph*expKill(false),items:kph*.55,gem:kph*.12};
+  const hp=MHP(G.stage-1),dps=S.atk*(1+S.crit/100*(S.cdmg/100-1))*(1+S.spd/100)*1.3;
+  const kph=3600/(hp/dps+.5)*.7*(1+S.afkP/100);
+  return {kph,gold:kph*8*1.12**G.stage*(1+S.gold/100),exp:kph*expKill(false),items:kph*.55,gem:kph*.03};
 }
 function offline(){
   const now=Date.now(),away=(now-(G.lastSeen||now))/1000;G.lastSeen=now;
   if(away<60)return;
-  const secs=Math.min(away,AFK_MAX*3600),h=secs/3600,R=afkRate();
+  const secs=Math.min(away,afkMax()*3600),h=secs/3600,R=afkRate();
   const kills=Math.floor(R.kph*h),gold=Math.round(R.gold*h),exp=Math.round(R.exp*h),gem=Math.round(R.gem*h);
   const n=Math.min(80,Math.round(R.items*h)),kept=[];let da=0,salv=0;
   for(let i=0;i<n;i++){const t=rollTier(RAR.map(r=>r.w)),it=makeItem(t,G.stage);if(G.auto[t]){da+=SALV[t];salv++}else kept.push(it)}
@@ -989,7 +1051,7 @@ function offline(){
   const tm=s=>{const hh=Math.floor(s/3600),mm=Math.floor(s%3600/60);return (hh?hh+' giờ ':'')+mm+' phút'};
   open={afk:1};
   const pn=$('pane');pn.style.setProperty('--rc','#c47a00');kept.sort((a,b)=>b.t-a.t);
-  pn.innerHTML=`<h3>Thưởng treo máy</h3><div class="meta">Bạn vắng ${tm(away)}${away>secs?' (tính tối đa '+AFK_MAX+' giờ)':''}. Nhân vật vẫn đánh ở ải ${G.stage}.</div>
+  pn.innerHTML=`<h3>Thưởng treo máy</h3><div class="meta">Bạn vắng ${tm(away)}${away>secs?' (tính tối đa '+afkMax()+' giờ)':''}. Nhân vật vẫn đánh ở ải ${G.stage}.</div>
     <div class="kv" style="margin-top:12px"><span>Quái đã hạ</span><b>${nf(kills)}</b><span>Vàng</span><b>+${nf(gold)}</b><span>Kinh nghiệm</span><b>+${nf(exp)}${G.lv>lv0?' · Lv '+lv0+' → '+G.lv:''}</b>
     <span>Ngọc</span><b>+${nf(gem)}</b><span>Đồ nhận</span><b>${kept.length} món</b><span>Tự phân giải</span><b>${salv} món → +${da} đá</b></div>
     ${kept.length?`<div class="res">${kept.slice(0,10).map(it=>cell(it,`data-bag="${it.id}"`)).join('')}</div>`:''}
@@ -997,7 +1059,7 @@ function offline(){
   $('sheet').hidden=false;dirty=1;save();
 }
 /* ---------- kỹ năng ---------- */
-let cds=[0,0,0],timers=[],vfx=[],parts=[],amb=[],banners=[],shake=0,scroll=0,flashC='255,40,40';
+let hitStop=0,powShown=null,cds=[0,0,0],timers=[],vfx=[],parts=[],amb=[],banners=[],shake=0,scroll=0,flashC='255,40,40';
 const later=(t,fn)=>timers.push({t,fn});
 // FIG: cỡ nhân vật so với khung đánh (game mẫu: nhân vật cao ~1/4 khung). ENTER: giây quái mới đi vào
 const FIG=.44,ENTER=.5;
@@ -1031,6 +1093,7 @@ function cast(i){
 }
 function kill(){
   mon.dead=.001;sfx('kill');
+  if(mon.boss){shake=Math.max(shake,mon.rb?14:9);hitStop=.09;flash=Math.max(flash,.25);flashC='255,240,200';vib(mon.rb?[40,30,90]:25)}
   const [x,y]=monMid(),u=U(),top=barY();
   burst(x,y,mon.boss?36:18,mon.col||'#ffffff',{sp:mon.boss?230:150,s:3.4});
   burst(x,y,8,'#ffffff',{k:'smoke',sp:60,g:-20,life:.6,s:7});
@@ -1038,10 +1101,11 @@ function kill(){
   coins(x,y,mon.boss?12:4);
   const g=Math.round(8*1.12**G.stage*(1+S.gold/100)*(mon.boss?5:1));
   G.gold+=g;say(x,top-10*u,'+'+nf(g),null,14,'gold');
-  if(mon.boss){const gm=mon.rb?40:15;G.gem+=gm;say(x,top-24*u,'+'+gm+' ngọc',null,14,'gem')}
+  // ngọc trùm ải: lần đầu hạ (ải mới) mới nhiều, đánh lại chỉ chút ít
+  if(mon.boss){const first=G.stage>=G.best,gm=first?(mon.rb?40:15):(mon.rb?5:1);G.gem+=gm;say(x,top-24*u,'+'+gm+' ngọc',null,14,'gem')}
   if(mon.rb){give({lt:1,ltl:1,sh:2});say(x,top-52*u,'+Linh thạch +Mảnh bảo vật',null,13,'gem')}
   else if(Math.random()<.02){ltAdd(ltRand(),1);say(x,top-38*u,'+1 linh thạch',null,13,'gem')}
-  else if(Math.random()<.06){G.gem+=2;say(x,top-24*u,'+2 ngọc',null,13,'gem')}
+  else if(Math.random()<.03){G.gem+=1;say(x,top-24*u,'+1 ngọc',null,13,'gem')}
   const ex=expKill(mon.boss);say(HX(),GY()-76*u,'KN +'+nf(ex),null,13,'exp');gainExp(ex);
   const n=mon.rb?3:mon.boss?2:(Math.random()<.55?1:0);
   for(let i=0;i<n;i++){let t=rollTier(RAR.map(r=>r.w),mon.boss);if(mon.rb&&i===0)t=Math.max(4,t);drop(t,x+(i-(n-1)/2)*26*u)}
@@ -1057,7 +1121,7 @@ function kill(){
 function drop(t,x){
   const it=makeItem(t,G.stage);
   fx.push({x,t:0,tier:t,si:it.si,n:it.name});
-  if(t===6){prog('red');sfx('red');vib([80,40,200]);flash=.7;flashC='255,40,40';shake=8;toast('RƠI ĐỒ ĐỎ: '+it.name,RAR[6].c);banner('ĐỒ ĐỎ!',it.name,RAR[6].c,2.2)}
+  if(t===6){prog('red');sfx('red');vib([80,40,200]);flash=.7;flashC='255,40,40';shake=8;hitStop=.12;showRed(it)}
   else if(t===5)toast('Rơi đồ Hồng: '+it.name,RAR[5].c);
   if(t>=2&&t<6)sfx('drop',t);
   return take(it);
@@ -1713,7 +1777,7 @@ function draw(){
 }
 let last=0;
 // màn mở đầu đang hiện thì trận đánh đứng yên; tốc độ x2 trong Cài đặt nhân đôi thời gian trận
-function frame(ts){const dt=Math.min(.05,(ts-last)/1000||0);last=ts;if(!introOn){step(dt*(G.set.spd||1));draw()}if(dirty){dirty=0;renderLive()}requestAnimationFrame(frame)}
+function frame(ts){const dt=Math.min(.05,(ts-last)/1000||0);last=ts;if(!introOn){if(hitStop>0)hitStop-=dt;else step(dt*(G.set.spd||1));draw()}if(dirty){dirty=0;renderLive()}requestAnimationFrame(frame)}
 cv.addEventListener('pointerdown',e=>{const r=cv.getBoundingClientRect();if(e.clientX-r.left>r.width*.45&&e.clientY-r.top>r.height*.3){if(mon&&!mon.dead&&mon.enter<=0){burst(e.clientX-r.left,e.clientY-r.top,6,'#ffffff',{sp:120,k:'ln',g:0,up:0,life:.25});hit(.6,{tap:1});tutEv('tap')}dirty=1}});
 
 /* ---------- khung màn hình chính ---------- */
@@ -1737,6 +1801,7 @@ function tickSkills(){
   cls().sk.forEach((k,i)=>{const b=document.querySelector(`#skills [data-sk="${i}"]`);if(!b)return;
     b.style.setProperty('--p',cds[i]/k.cd);b.classList.toggle('cd',cds[i]>0);$('cd'+i).textContent=cds[i]>0?Math.ceil(cds[i]):''});
   tutPos();
+  if(powShown==null)powShown=S.power;powShown+=(S.power-powShown)*.3;if(Math.abs(S.power-powShown)<1)powShown=S.power;$('hPow').textContent=nf(powShown);
   $('hpFill').style.width=Math.max(0,hero.hp/hero.max*100)+'%';$('hpTxt').textContent=nf(Math.max(0,hero.hp))+' / '+nf(hero.max);
 }
 function renderTop(){
@@ -1745,7 +1810,7 @@ function renderTop(){
   $('avLv').textContent='Lv.'+G.lv;$('ava').style.setProperty('--kc',C.c);
   // chân dung: vẽ lại người que đang mặc đồ, chỉ lấy phần đầu
   paint($('avc'),52,52,()=>stick(22,26+40.5*1.5,1.5,heroLook()));
-  $('hName').textContent=G.name||C.n;$('hPow').textContent=nf(S.power);
+  $('hName').textContent=G.name||C.n;
   $('hMap').textContent=REGIONS[Math.floor((G.stage-1)/10)%REGIONS.length]+(G.stage>70?' · vòng '+(Math.floor((G.stage-1)/70)+1):'');
   $('hStage').textContent='Ải '+G.stage+' · '+(G.kill===4?'trùm':'quái '+(G.kill+1)+'/5');
   $('hGold').textContent=nk(G.gold);$('hGem').textContent=nk(G.gem);$('hDa').textContent=nk(G.da);
@@ -1757,7 +1822,7 @@ function renderTop(){
   UPS=new Set(G.bag.filter(it=>{const e=G.eq.slice();e[it.si]=it;return calc(e).power>S.power}).map(it=>it.id));
   $('n_tui').hidden=$('n_nv').hidden=!UPS.size;
   $('n_ren').hidden=!G.eq.some(it=>it&&(it.plus||0)<5&&G.da>=enhCost(it).da&&G.gold>=enhCost(it).gold);
-  $('n_cau').hidden=G.gem<100;
+  $('n_cau').hidden=G.gem<100;$('n_ky').hidden=!canTal();if(canBxh())$('dP').hidden=false;
 }
 let UPS=new Set();
 // cửa sổ Cài đặt có ô gõ chữ: không vẽ lại theo trận đánh kẻo mất chữ đang gõ
@@ -1766,7 +1831,7 @@ function renderLive(){renderTop();if(winKey&&winKey!=='cai')renderWin()}
 /* ---------- cửa sổ ---------- */
 let winKey=null,nhvTab='ngay',mapReg=0,renTab='cuong';
 const TAY={gem:20,da:10};
-const TITLES={nv:'Nhân vật',ky:'Kỹ năng',ren:'Lò rèn',tui:'Túi đồ',cau:'Cầu nguyện',nhv:'Nhiệm vụ',tile:'Tỉ lệ ra đồ',bo:'Bộ đồ Đỏ',trum:'Ải trùm',dau:'Đấu trường',afk:'Treo máy',cai:'Cài đặt',bv:'Bảo vật',pet:'Thú cưng',trang:'Trang phục',shop:'Cửa hàng',diem:'Điểm danh',map:'Bản đồ',thap:'Tháp thử thách',wb:'Trùm thế giới',phieu:'Phiêu lưu'};
+const TITLES={nv:'Nhân vật',ky:'Kỹ năng',ren:'Lò rèn',tui:'Túi đồ',cau:'Cầu nguyện',nhv:'Nhiệm vụ',tile:'Tỉ lệ ra đồ',bo:'Bộ đồ Đỏ',trum:'Ải trùm',dau:'Đấu trường',afk:'Treo máy',cai:'Cài đặt',bv:'Bảo vật',pet:'Thú cưng',trang:'Trang phục',shop:'Cửa hàng',cs:'Thiên phú',bxh:'Xếp hạng',diem:'Điểm danh',map:'Bản đồ',thap:'Tháp thử thách',wb:'Trùm thế giới',phieu:'Phiêu lưu'};
 function openWin(k){if(k==='map')mapReg=Math.floor((G.stage-1)/10)%REGIONS.length;winKey=k;wipeArm=0;tutEv('open:'+k);$('winTitle').textContent=TITLES[k];$('win').hidden=false;$('winBody').scrollTop=0;renderWin();
   document.querySelectorAll('#nav .ic').forEach(b=>b.setAttribute('aria-current',b.dataset.open===k))}
 function closeWin(){if(winKey)tutEv('closewin');winKey=null;$('win').hidden=true;document.querySelectorAll('#nav .ic').forEach(b=>b.setAttribute('aria-current','false'))}
@@ -1794,7 +1859,7 @@ function renderWin(){
   }
   else if(k==='ky'){
     const C=cls();
-    b.innerHTML=`<div class="sec"><h3>Lớp nhân vật<span>bản thử cho đổi miễn phí</span></h3><div class="clsrow">${Object.entries(CLS).map(([kk,c])=>`<button class="cls" style="--kc:${c.c}" data-cls="${kk}" aria-pressed="${G.cls===kk}"><b>${c.n}</b><span>${c.desc}</span></button>`).join('')}</div></div>
+    b.innerHTML=`<button class="btn orange" data-open="cs">Thiên phú${talPts()>0?' · '+talPts()+' điểm chưa dùng':''}</button><div class="sec"><h3>Lớp nhân vật<span>bản thử cho đổi miễn phí</span></h3><div class="clsrow">${Object.entries(CLS).map(([kk,c])=>`<button class="cls" style="--kc:${c.c}" data-cls="${kk}" aria-pressed="${G.cls===kk}"><b>${c.n}</b><span>${c.desc}</span></button>`).join('')}</div></div>
       <div class="sec"><h3>Kỹ năng ${C.n}</h3>${C.sk.map((s,i)=>`<div class="skrow"><button class="sk" style="--kc:${C.c}" data-sk="${i}" aria-label="${s.n}">${gsvg(SKI[s.k])}</button><div><h4>${i===2?'Chiêu lớn · ':''}${s.n}</h4><p>${s.d}</p></div><em>${s.cd} giây</em></div>`).join('')}
       <div class="toggle"><span>Tự dùng kỹ năng khi hồi xong</span><button class="btn ${G.autoSk?'':'grey'}" data-autosk="1">${G.autoSk?'Đang bật':'Đang tắt'}</button></div></div>`;
   }
@@ -1882,6 +1947,21 @@ function renderWin(){
         return `<div class="bl"><div class="face" style="background:${c.gem?'#4bb6e6':'#e0a020'}">${c.gem?'N':'V'}</div><div><h4>${I.n}</h4><p>Giá ${costText(c)}</p></div>
         <button class="btn ${x.b?'grey':'orange'}" data-buy="${i}" ${x.b||!ok?'disabled':''}>${x.b?'Đã mua':'Mua'}</button></div>`}).join('')}`;
   }
+  else if(k==='cs'){
+    const tp=talPts();
+    b.innerHTML=`<div class="sec"><h3>Cây thiên phú<span>còn ${tp} điểm</span></h3>
+      <p class="muted">${G.lv<TAL_LV?'Đạt cấp '+TAL_LV+' để nhận điểm đầu tiên. ':''}Từ cấp ${TAL_LV}, mỗi lần lên cấp được 1 điểm. Mỗi ô tối đa ${TAL_MAX} điểm. Ô dưới mở khi nhánh đó có đủ 3, 6, 9, 12 điểm.</p>
+      <div class="tal">${TAL.map((T,bi)=>`<div class="col" style="--tc:${T.c}"><h4>${T.n}</h4>${T.nodes.map(([kk,v,n,pct],i)=>{const r=talR(bi,i),op=talOpen(bi,i);
+        return `<button class="tn ${r>=TAL_MAX?'full':''}" data-tal="${bi}-${i}" ${op&&r<TAL_MAX&&tp>0?'':'disabled'}><b>${n}</b><em>+${fmt(v*r,0)}${pct?'%':''}</em>${r}/${TAL_MAX}${op?'':' · cần '+i*3+' điểm nhánh'}</button>`}).join('')}</div>`).join('')}</div>
+      <button class="btn grey" data-act="talreset" ${Object.keys(G.tal).length&&G.gem>=100?'':'disabled'}>Tẩy điểm thiên phú · 100 ngọc</button></div>`;
+  }
+  else if(k==='bxh'){
+    const L=ladder(),me=L.findIndex(x=>x.me)+1;
+    b.innerHTML=`<div class="actbox"><div>Hạng của bạn: <b>${me}</b> / ${L.length} · lực chiến ${nf(S.power)}</div>
+      <button class="btn orange" data-act="bxhgift" ${canBxh()?'':'disabled'}>${canBxh()?'Nhận thưởng hạng hôm nay: '+rankGift(me)+' ngọc':'Hôm nay đã nhận, mai quay lại'}</button>
+      <p class="muted">Hạng 1: 300 · top 3: 200 · top 10: 120 · top 30: 60 · còn lại 20 ngọc. Người chơi máy mạnh dần mỗi ngày.</p></div>
+      <div>${L.map((x,i)=>`<div class="lad ${x.me?'me':''}"><b style="color:${i<3?['#e0a020','#8c8c9c','#b06a3a'][i]:'var(--ink2)'}">${i+1}</b><span>${x.me?'<b style="font-size:14px">Bạn · </b>':''}${x.n} <small style="color:${CLS[x.cls].c}">${CLS[x.cls].n}</small></span><em>${nf(x.pow)}</em></div>`).join('')}</div>`;
+  }
   else if(k==='tui'){
     G.bag.sort((a,c)=>c.t-a.t||(c.plus||0)-(a.plus||0)||c.lvl-a.lvl||a.si-c.si);
     b.innerHTML=`<div class="sec"><h3>Túi đồ<span>${G.bag.length}/${BAG_MAX} ô</span></h3>
@@ -1928,7 +2008,7 @@ function renderWin(){
   }
   else if(k==='afk'){
     const R=afkRate();
-    b.innerHTML=`<p class="muted">Tắt game hoặc thoát ra, nhân vật vẫn tự đánh ở ải đang đứng với 70% tốc độ, tính tối đa ${AFK_MAX} giờ. Mở lại game sẽ hiện bảng thưởng. Đồ nhận được cũng tự phân giải theo cài đặt ở Lò rèn.</p>
+    b.innerHTML=`<p class="muted">Tắt game hoặc thoát ra, nhân vật vẫn tự đánh ở ải đang đứng với 70% tốc độ, tính tối đa ${afkMax()} giờ. Mở lại game sẽ hiện bảng thưởng. Đồ nhận được cũng tự phân giải theo cài đặt ở Lò rèn.</p>
       <div class="sec"><h3>Mỗi giờ treo máy ở ải ${G.stage}<span>ước tính</span></h3>
       <div class="kv"><span>Quái hạ</span><b>${nf(R.kph)}</b><span>Vàng</span><b>${nf(R.gold)}</b><span>Kinh nghiệm</span><b>${nf(R.exp)}</b><span>Ngọc</span><b>${nf(R.gem)}</b><span>Đồ rơi</span><b>${nf(R.items)} món</b></div></div>
       <p class="muted">Muốn treo máy được nhiều hơn: lên ải cao hơn, mặc đồ mạnh hơn, tăng Tốc đánh và Vàng nhận.</p>`;
@@ -1996,8 +2076,9 @@ function renderWin(){
       row(UI.tower,'Tháp thử thách','Đã qua tầng '+(G.tower||0)+'. Không giới hạn lượt.','thap','Leo')+
       row(UI.wb,'Trùm thế giới',alive+'/'+WB.length+' trùm đang sống. Máu trùm giữ lại giữa các lần đánh.','wb')+
       row(UI.boss,'Ải trùm','Còn '+(TRUM_MAX-d2.trum)+'/'+TRUM_MAX+' lượt hôm nay.','trum')+
+      row(UI.relic,'Bảng xếp hạng','Xếp lực chiến với 50 người que. Nhận ngọc mỗi ngày theo hạng.','bxh','Xem')+
       row(UI.pvp,'Đấu trường','Hạng '+G.arena.rank+' · còn '+(PVP_MAX-d2.pvp)+'/'+PVP_MAX+' lượt.','dau')+
-      row(UI.afk,'Treo máy','Tắt game vẫn đánh, tối đa '+AFK_MAX+' giờ.','afk','Xem')+
+      row(UI.afk,'Treo máy','Tắt game vẫn đánh, tối đa '+afkMax()+' giờ.','afk','Xem')+
       `<div class="hub" style="opacity:.6"><span class="o">${gsvg(UI.guild)}</span><div><h4>Bang hội</h4><p>Cần máy chủ để chơi cùng người thật. Sắp có.</p></div><span></span></div>`;
   }
 }
@@ -2040,6 +2121,11 @@ function showResults(res){
     <div class="btns"><button class="btn blue" data-act="again" ${G.gem<res.length*10?'disabled':''}>Cầu tiếp x${res.length}</button><button class="btn grey" data-act="close">Đóng</button></div>`;
   $('sheet').hidden=false;
 }
+// màn ĐỒ ĐỎ: chạm để đóng, tự tắt sau 3 giây
+let redT;
+function showRed(it){const e=$('redfx');e.innerHTML=`<div class="rc"><h2>ĐỒ ĐỎ!</h2>${cell(it,'tabindex="-1"')}<b>${it.name}</b><span>Bộ ${SETS[it.sk].n} · ${SLOTS[it.si].n}</span><small>Chạm để đóng</small></div>`;
+  e.hidden=false;clearTimeout(redT);redT=setTimeout(()=>e.hidden=true,3200)}
+function powUp(n){const box=document.querySelector('.namebox');if(!box||n<1)return;const e=document.createElement('span');e.className='powup';e.textContent='▲ +'+nf(n);box.appendChild(e);setTimeout(()=>e.remove(),1300)}
 function closeSheet(){if(open)tutEv('closesheet');$('sheet').hidden=true;open=null}
 
 /* ---------- màn mở đầu: lần đầu đặt tên + chọn lớp, lần sau chạm để chơi tiếp ---------- */
@@ -2182,15 +2268,17 @@ function salvJunk(){
 
 document.addEventListener('click',e=>{
   if(introOn){audioOn();if(introStep===0)return introDone()}
+  if(!$('redfx').hidden&&e.target.closest('#redfx')){$('redfx').hidden=true;return}
   if(e.target===$('sheet'))return closeSheet();
   if(e.target===$('win'))return closeWin();
-  const b=e.target.closest('[data-open],[data-soon],[data-bag],[data-eq],[data-act],[data-auto],[data-q],[data-chest],[data-sk],[data-autosk],[data-cls],[data-rsel],[data-go],[data-trum],[data-pvp],[data-set],[data-spd],[data-icls],[data-tab],[data-wq],[data-wch],[data-ach],[data-mapreg],[data-mapch],[data-stage],[data-wb],[data-rtab],[data-sock],[data-unsock],[data-merge],[data-reroll],[data-rel],[data-pet],[data-skin],[data-buy]');
+  const b=e.target.closest('[data-open],[data-soon],[data-bag],[data-eq],[data-act],[data-auto],[data-q],[data-chest],[data-sk],[data-autosk],[data-cls],[data-rsel],[data-go],[data-trum],[data-pvp],[data-set],[data-spd],[data-icls],[data-tab],[data-wq],[data-wch],[data-ach],[data-mapreg],[data-mapch],[data-stage],[data-wb],[data-rtab],[data-sock],[data-unsock],[data-merge],[data-reroll],[data-rel],[data-pet],[data-skin],[data-buy],[data-tal]');
   if(!b||b.disabled)return;
   const ds=b.dataset;
   if(!ds.sk)sfx('click');
   if(ds.icls){introPick=ds.icls;return renderIntro()}
   if(ds.tab){nhvTab=ds.tab;return renderWin()}
   if(ds.rtab){renTab=ds.rtab;return renderWin()}
+  if(ds.tal){const [bi,i]=ds.tal.split('-').map(Number);if(talPts()<1||!talOpen(bi,i)||talR(bi,i)>=TAL_MAX)return;G.tal[bi+'-'+i]=talR(bi,i)+1;sfx('ok');refresh();dirty=1;save();return renderWin()}
   if(ds.sock){const [i,kk,l]=ds.sock.split(':'),it=G.eq[renSel];if(!it||!ltHave(kk,+l))return;sockOf(it)[+i]=kk+':'+l;G.lt[kk][l-1]--;sfx('ok');refresh();dirty=1;save();return toast('Đã khảm '+ltName(kk,+l),LT[kk].c)}
   if(ds.unsock){const it=G.eq[renSel],so=sockOf(it),g=so[+ds.unsock];if(!g)return;const [kk,l]=g.split(':');ltAdd(kk,+l);so[+ds.unsock]=null;refresh();dirty=1;save();return toast('Đã tháo '+ltName(kk,+l))}
   if(ds.merge){const kk=ds.merge,a=G.lt[kk];let n=0;for(let l=1;l<LT_MAX;l++)while(a[l-1]>=3){a[l-1]-=3;a[l]++;n++}sfx('ok');dirty=1;save();return toast('Ghép được '+n+' viên '+LT[kk].n+' cấp cao hơn',LT[kk].c)}
@@ -2227,6 +2315,8 @@ document.addEventListener('click',e=>{
       if(q.go)return openWin(q.go);return toast('Cứ để nhân vật đánh quái ở màn chính là xong')}
     case 'sign':{if(!canSign())return;const t=give(SIGN[G.sign.n%30]);G.sign.n++;G.sign.last=today();prog('sign');sfx('lvup');dirty=1;save();return toast('Điểm danh: '+t,'#f6c64f')}
     case 'thap':closeSheet();return startThap();
+    case 'talreset':{if(G.gem<100)return;G.gem-=100;G.tal={};refresh();dirty=1;save();return renderWin()}
+    case 'bxhgift':{if(!canBxh())return;const L=ladder(),r=L.findIndex(x=>x.me)+1,g=rankGift(r);G.gem+=g;G.bxhDay=today();sfx('coin');dirty=1;save();return toast('Thưởng hạng '+r+': +'+g+' ngọc','#8fe3ff')}
     case 'shopref':{const c=shopRef();if(G.gem<c)return;G.gem-=c;const r=G.shop.ref+1;shopRoll();G.shop.ref=r;dirty=1;save();return renderWin()}
     case 'intronext':G.name=$('inName').value.trim().slice(0,14)||NAME_GOI[0];introStep=2;return renderIntro();
     case 'introstart':case 'introgo':return introDone();
@@ -2288,7 +2378,7 @@ document.addEventListener('visibilitychange',()=>{if(!G)return;if(document.hidde
 function seed(){
   G={stage:1,kill:0,gold:1500,gem:500,da:30,pity:0,auto:[true,true,false,false,false,false,false],eq:[null,null,null,null,null,null],bag:[],uid:0};
   G.eq[0]=makeItem(0,1,0);G.eq[2]=makeItem(1,1,2);
-  [[2,1],[3,3],[4,4],[5,5],[6,0,'long'],[6,2,'long'],[6,1,'quy'],[0,3],[1,4]].forEach(([t,si,sk])=>G.bag.push(makeItem(t,1,si,sk)));
+  [[2,1],[3,3],[4,4],[5,5],[6,0,'long'],[0,3],[1,4]].forEach(([t,si,sk])=>G.bag.push(makeItem(t,1,si,sk)));
 }
 function start(data){
   if(data&&data.G)G=data.G;
@@ -2304,6 +2394,7 @@ function start(data){
   if(!G.tot)G.tot={};if(!G.ach)G.ach={};if(G.mq==null)G.mq=0;if(!G.sign)G.sign={n:0,last:''};
   if(!G.stars)G.stars={};if(!G.mapCh)G.mapCh={};if(!G.best)G.best=G.stage;if(G.tower==null)G.tower=0;if(!G.wb)G.wb=[];
   if(!G.lt)G.lt={};if(!G.rel)G.rel={};if(G.relU==null)G.relU=0;if(!G.pet)G.pet={own:{cho:1},act:'cho'};if(!G.skin)G.skin={cape:null,aura:null};
+  if(!G.tal)G.tal={};if(!G.born)G.born=Date.now();
   const chua=!G.cls;if(chua)G.cls='cb';
   if(G.tut==null)G.tut=chua?0:-1;
   daily();week();refresh();
@@ -2331,7 +2422,29 @@ window.__thu=k=>{
   if(k==='giau'){G.gem+=5000;G.gold+=1e6;G.da+=2000;G.relU=60;G.best=Math.max(G.best,45);G.tower=Math.max(G.tower,12);G.tot.sign=8;G.tot.wb=1;
     for(const kk of Object.keys(LT))ltAdd(kk,1,7);for(let i=0;i<4;i++)addBag(makeItem(6,20));refresh();dirty=1}
   if(k.startsWith('w_')){closeSheet();if(fight)endFight(false);closeSheet();const w=k.slice(2);if(w==='kham'||w==='tay'){autoEquip();renTab=w;renSel=0;openWin('ren')}else openWin(w)}
+  if(k==='red'){closeSheet();closeWin();showRed(makeItem(6,10))}
+  if(k==='lv20'){$('redfx').hidden=true;closeSheet();closeWin();gainExp(2e5)}
   if(k==='tt'){closeSheet();G.tot.kill=150;nhvTab='tt';openWin('nhv')}
+};
+// giả lập cân bằng (chỉ dùng khi chạy thử): mỗi ngày chơi tay 1 giờ (5 phút mặc đồ, cường hóa, cầu nguyện một lần) rồi treo máy 12 giờ
+window.__sim=(days=7,activeH=1)=>{
+  closeSheet();closeWin();introOn=0;$('intro').hidden=true;G.tut=-1;
+  const setOwn=()=>{const m={};for(const it of G.bag.concat(G.eq.filter(Boolean)))if(it.sk)(m[it.sk]=m[it.sk]||new Set()).add(it.si);return Math.max(0,...Object.values(m).map(x=>x.size))};
+  const out=[];let gemIn=0;
+  for(let d=1;d<=days;d++){
+    let prev=G.gem;const N=Math.round(activeH*3600/.05);
+    for(let i=0;i<N;i++){step(.05);if(G.gem>prev)gemIn+=G.gem-prev;prev=G.gem;
+      if(i%6000===0){autoEquip();
+        for(const it of G.eq)if(it)while((it.plus||0)<ENH_MAX&&enhRate(it.plus||0)>=50&&G.da>=enhCost(it).da&&G.gold>=enhCost(it).gold)enhance(it);
+        salvJunk();while(G.gem>=100){pray(10);closeSheet()}
+        // dùng điểm thiên phú (Sát Thần trước, rồi Bất Diệt), nâng thú cưng
+        for(const bi of [0,1,2])for(let j=0;j<5;j++)while(talPts()>0&&talOpen(bi,j)&&talR(bi,j)<TAL_MAX)G.tal[bi+'-'+j]=talR(bi,j)+1;
+        for(let l;(l=G.pet.own.cho)<PET_MAX&&G.gold>=petCost(l).gold&&G.da>=petCost(l).da*3;){G.gold-=petCost(l).gold;G.da-=petCost(l).da;G.pet.own.cho++}
+        refresh();prev=G.gem}}
+    const g0=G.gem;G.lastSeen=Date.now()-12*3600e3;offline();closeSheet();gemIn+=Math.max(0,G.gem-g0);
+    out.push({ngay:d,ai:G.stage,cao:G.best,cap:G.lv,lucchien:S.power,do_do:G.tot.red||0,bo_nhieu_nhat:setOwn(),ngoc_nhan:gemIn,quai:G.tot.kill||0});
+  }
+  return out;
 };
 window.addEventListener('resize',resize);
 window.claude?.hot?.snapshot?.(()=>({G}));
