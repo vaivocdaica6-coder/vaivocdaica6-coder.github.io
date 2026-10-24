@@ -335,6 +335,15 @@ i.gem{display:inline-block;width:12px;height:12px;transform:rotate(45deg) scale(
 .lad b{font-family:var(--f-disp);font-size:16px;text-align:center}
 .lad.me{background:#ffe9b8;border:2px solid #e0a020}
 .lad em{font-style:normal;font-family:var(--f-disp);font-weight:700}
+/* máy chủ */
+.svbar{position:relative;z-index:2;width:100%;display:flex;align-items:center;gap:8px;margin-bottom:10px;background:#1b0f07d8;border:2px solid #e0b060;border-radius:10px;padding:8px 12px;color:#fff;font-family:var(--f-disp);font-weight:700;font-size:16px;text-align:left}
+.svbar u{margin-left:auto;color:#ffe08a;font-size:14px}
+.svtag{font-family:var(--f-body);font-size:11px;font-weight:700;border-radius:6px;padding:1px 6px;color:#fff;background:var(--sc)}
+.svlist{display:grid;gap:6px;max-height:min(52vh,420px);overflow:auto}
+.svrow{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;text-align:left;background:var(--parch2);border:2px solid var(--parch3);border-radius:8px;padding:6px 10px;color:var(--ink)}
+.svrow b{font-family:var(--f-disp);font-size:16px}
+.svrow small{grid-column:1/-1;color:var(--ink2);font-size:12px}
+.svrow[aria-pressed="true"]{border-color:#e07b12;background:#ffe9b8}
 /* màn mở đầu */
 .intro{position:fixed;inset:0;z-index:60;display:flex;justify-content:center;background:#120a05}
 .intro .in{position:relative;width:100%;max-width:480px;height:100%;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
@@ -345,7 +354,7 @@ i.gem{display:inline-block;width:12px;height:12px;transform:rotate(45deg) scale(
 .intro .logo small{display:block;font-size:.38em;color:#fff;letter-spacing:.06em;margin-top:8px;text-shadow:0 2px 0 #2b1609,2px 2px 0 #2b1609,-2px -2px 0 #2b1609}
 .intro .box2{position:relative;z-index:2;width:100%;background:var(--parch);color:var(--ink);border:4px solid var(--wood3);border-radius:14px;padding:14px;display:grid;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.6)}
 .intro .box2 h3{margin:0;font-family:var(--f-disp);font-size:18px;text-align:center}
-.intro input{font:inherit;font-family:var(--f-disp);font-size:18px;font-weight:700;color:var(--ink);background:#fff8e6;border:2px solid var(--parch3);border-radius:8px;padding:8px 10px;width:100%}
+.intro input{box-sizing:border-box;font:inherit;font-family:var(--f-disp);font-size:18px;font-weight:700;color:var(--ink);background:#fff8e6;border:2px solid var(--parch3);border-radius:8px;padding:8px 10px;width:100%}
 .intro .go{font-size:22px;padding:12px;animation:ready2 1.4s ease-in-out infinite}
 @keyframes ready2{50%{transform:scale(1.04)}}
 .intro .tap{position:relative;z-index:2;font-family:var(--f-disp);font-weight:800;font-size:20px;color:#fff;text-shadow:0 2px 0 #000;animation:blink 1.4s ease-in-out infinite;margin-bottom:10px}
@@ -368,7 +377,7 @@ i.gem{display:inline-block;width:12px;height:12px;transform:rotate(45deg) scale(
 .seg{display:flex;gap:4px}
 .seg button{border-radius:6px;padding:4px 10px;font-family:var(--f-disp);font-weight:800;background:#fff8;border:2px solid var(--parch3);color:var(--ink2)}
 .seg button[aria-pressed="true"]{background:var(--green);border-color:#2f5a12;color:#fff}
-.code{width:100%;min-height:64px;font:12px/1.3 ui-monospace,Consolas,monospace;color:var(--ink);background:#fff8e6;border:2px solid var(--parch3);border-radius:8px;padding:6px;word-break:break-all;resize:vertical}
+.code{box-sizing:border-box;width:100%;min-height:64px;font:12px/1.3 ui-monospace,Consolas,monospace;color:var(--ink);background:#fff8e6;border:2px solid var(--parch3);border-radius:8px;padding:6px;word-break:break-all;resize:vertical}
 .btn.red{background:linear-gradient(180deg,#ff7a6a,#c63b2f);border-color:#6e140d;box-shadow:0 3px 0 #6e140d}
 
 /* so sánh đồ */
@@ -766,7 +775,7 @@ const canTal=()=>talPts()>0;
 
 /* ---------- bảng xếp hạng lực chiến: 50 người que máy, mạnh dần theo ngày ---------- */
 function ladder(){
-  const days=(Date.now()-G.born)/864e5,gr=1+.04*days,R=rng(777),L=[];
+  const days=Math.max(0,(Date.now()-svCur().open)/864e5),gr=1+.04*days,R=rng(777+SV*101),L=[];
   for(let i=0;i<50;i++){const a=R(),b=R(),c=R(),d=R();L.push({n:NAMES[Math.floor(a*NAMES.length)]+(i%3?'':' '+(10+Math.floor(b*89))),cls:['cb','ct','ps'][Math.floor(c*3)],pow:Math.round(400*1.115**(49-i)*gr*(.95+d*.1))})}
   L.push({me:1,n:G.name||cls().n,cls:G.cls,pow:S.power});L.sort((a,b)=>b.pow-a.pow);return L;
 }
@@ -1975,7 +1984,7 @@ function renderWin(){
   }
   else if(k==='bxh'){
     const L=ladder(),me=L.findIndex(x=>x.me)+1;
-    b.innerHTML=`<div class="actbox"><div>Hạng của bạn: <b>${me}</b> / ${L.length} · lực chiến ${nf(S.power)}</div>
+    b.innerHTML=`<div class="actbox"><div>Máy chủ <b>S${SV} · ${svCur().name}</b> · hạng của bạn: <b>${me}</b> / ${L.length} · lực chiến ${nf(S.power)}</div>
       <button class="btn orange" data-act="bxhgift" ${canBxh()?'':'disabled'}>${canBxh()?'Nhận thưởng hạng hôm nay: '+rankGift(me)+' ngọc':'Hôm nay đã nhận, mai quay lại'}</button>
       <p class="muted">Hạng 1: 300 · top 3: 200 · top 10: 120 · top 30: 60 · còn lại 20 ngọc. Người chơi máy mạnh dần mỗi ngày.</p></div>
       <div>${L.map((x,i)=>`<div class="lad ${x.me?'me':''}"><b style="color:${i<3?['#e0a020','#8c8c9c','#b06a3a'][i]:'var(--ink2)'}">${i+1}</b><span>${x.me?'<b style="font-size:14px">Bạn · </b>':''}${x.n} <small style="color:${CLS[x.cls].c}">${CLS[x.cls].n}</small></span><em>${nf(x.pow)}</em></div>`).join('')}</div>`;
@@ -2034,6 +2043,7 @@ function renderWin(){
   else if(k==='cai'){
     const tg=(key,label)=>`<div class="toggle"><span>${label}</span><button class="btn ${G.set[key]?'':'grey'}" data-set="${key}">${G.set[key]?'Đang bật':'Đang tắt'}</button></div>`;
     b.innerHTML=`<div class="sec"><h3>Âm thanh và rung</h3><div class="set2">${tg('mus','Nhạc nền')}${tg('sfx','Tiếng đánh, rơi đồ')}${tg('vib','Rung máy khi rơi đồ Đỏ, lên cấp')}</div></div>
+      <div class="sec"><h3>Máy chủ</h3><div class="toggle"><span>S${svCur().n} · ${svCur().name}</span><button class="btn blue" data-act="svlist">Đổi máy chủ</button></div></div>
       <div class="sec"><h3>Trận đánh</h3><div class="toggle"><span>Tốc độ trận</span><div class="seg">${[1,2].map(v=>`<button data-spd="${v}" aria-pressed="${(G.set.spd||1)===v}">x${v}</button>`).join('')}</div></div></div>
       <div class="sec"><h3>Tên nhân vật</h3><div class="toggle"><input id="nmIn" class="code" style="min-height:0;font-size:15px" maxlength="14" value="${(G.name||'').replace(/"/g,'')}" aria-label="Tên nhân vật"><button class="btn blue" data-act="rename">Đổi tên</button></div></div>
       <div class="sec"><h3>Chuyển sang máy khác<span>mã sao lưu</span></h3>
@@ -2147,15 +2157,21 @@ function powUp(n){const box=document.querySelector('.namebox');if(!box||n<1)retu
 function closeSheet(){if(open)tutEv('closesheet');$('sheet').hidden=true;open=null}
 
 /* ---------- màn mở đầu: lần đầu đặt tên + chọn lớp, lần sau chạm để chơi tiếp ---------- */
-let introOn=0,introPick='cb',introStep=0;
+let introOn=0,introPick='cb',introStep=0,introFirst=0;
 const NAME_GOI=['Que Sắt','Tiểu Que','Que Lì Đòn','Que Săn Đỏ','Que Phố Cổ','Que Trà Đá','Que Bất Bại','Que Lãng Tử'];
 function showIntro(first){
-  introOn=1;$('intro').hidden=false;introStep=first?1:0;renderIntro();requestAnimationFrame(introLoop);
+  introOn=1;$('intro').hidden=false;introFirst=first?1:0;introStep=first?1:0;renderIntro();requestAnimationFrame(introLoop);
 }
 function renderIntro(){
-  const b=$('introBody');
-  if(introStep===0)b.innerHTML=`<div class="tap">Chạm để chơi tiếp</div><button class="btn orange go" data-act="introgo" style="width:100%">Chơi tiếp · ${G.name||cls().n} Lv.${G.lv}</button>`;
-  else if(introStep===1)b.innerHTML=`<div class="box2"><h3>Đặt tên nhân vật</h3><input id="inName" maxlength="14" value="${NAME_GOI[rnd(NAME_GOI.length)]}" aria-label="Tên nhân vật">
+  const b=$('introBody'),c=svCur(),bar=`<button class="svbar" data-act="svlist">S${c.n} · ${c.name} <span class="svtag" style="--sc:${c.tag[1]}">${c.tag[0]}</span><u>Đổi máy chủ</u></button>`;
+  if(introStep===3){const L=servers().reverse();
+    b.innerHTML=`<div class="box2"><h3>Chọn máy chủ</h3><div class="svlist">${L.map(x=>{const ch=svChar(x.n);
+      return `<button class="svrow" data-sv="${x.n}" aria-pressed="${x.n===SV}"><b>S${x.n} · ${x.name}</b><span class="svtag" style="--sc:${x.tag[1]}">${x.tag[0]}</span>
+        <small>${ch?'Nhân vật: '+ch.name+' · '+CLS[ch.cls].n+' Lv.'+ch.lv:'Chưa có nhân vật'} · mở ${new Date(x.open).toLocaleDateString('vi-VN')}</small></button>`}).join('')}</div>
+      <p class="muted">Mỗi máy chủ là một nhân vật và một bảng xếp hạng riêng. Máy chủ mới thì người chơi khác còn yếu, dễ lên top. Cứ 7 ngày mở thêm 1 máy chủ.</p>
+      <button class="btn grey" data-act="svback">Quay lại</button></div>`;return}
+  if(introStep===0)b.innerHTML=`${bar}<div class="tap">Chạm để chơi tiếp</div><button class="btn orange go" data-act="introgo" style="width:100%">Chơi tiếp · ${G.name||cls().n} Lv.${G.lv}</button>`;
+  else if(introStep===1)b.innerHTML=`${bar}<div class="box2"><h3>Đặt tên nhân vật</h3><input id="inName" maxlength="14" value="${NAME_GOI[rnd(NAME_GOI.length)]}" aria-label="Tên nhân vật">
     <button class="btn orange go" data-act="intronext">Tiếp tục</button></div>`;
   else b.innerHTML=`<div class="box2"><h3>Chọn lớp nhân vật</h3><div class="clsrow">${Object.entries(CLS).map(([kk,c])=>`<button class="cls" style="--kc:${c.c}" data-icls="${kk}" aria-pressed="${introPick===kk}"><b>${c.n}</b><span>${c.desc}</span></button>`).join('')}</div>
     <p class="muted">${CLS[introPick].sk.map(s=>`<b>${s.n}</b>: ${s.d}`).join(' · ')}</p>
@@ -2285,15 +2301,17 @@ function salvJunk(){
 }
 
 document.addEventListener('click',e=>{
-  if(introOn){audioOn();if(introStep===0)return introDone()}
+  if(introOn){audioOn();if(introStep===0&&!e.target.closest('[data-act],[data-sv]'))return introDone()}
   if(!$('redfx').hidden&&e.target.closest('#redfx')){$('redfx').hidden=true;return}
   if(e.target===$('sheet'))return closeSheet();
   if(e.target===$('win'))return closeWin();
-  const b=e.target.closest('[data-open],[data-soon],[data-bag],[data-eq],[data-act],[data-auto],[data-q],[data-chest],[data-sk],[data-autosk],[data-cls],[data-rsel],[data-go],[data-trum],[data-pvp],[data-set],[data-spd],[data-icls],[data-tab],[data-wq],[data-wch],[data-ach],[data-mapreg],[data-mapch],[data-stage],[data-wb],[data-rtab],[data-sock],[data-unsock],[data-merge],[data-reroll],[data-rel],[data-pet],[data-skin],[data-buy],[data-tal]');
+  const b=e.target.closest('[data-open],[data-soon],[data-bag],[data-eq],[data-act],[data-auto],[data-q],[data-chest],[data-sk],[data-autosk],[data-cls],[data-rsel],[data-go],[data-trum],[data-pvp],[data-set],[data-spd],[data-icls],[data-tab],[data-wq],[data-wch],[data-ach],[data-mapreg],[data-mapch],[data-stage],[data-wb],[data-rtab],[data-sock],[data-unsock],[data-merge],[data-reroll],[data-rel],[data-pet],[data-skin],[data-buy],[data-tal],[data-sv]');
   if(!b||b.disabled)return;
   const ds=b.dataset;
   if(!ds.sk)sfx('click');
   if(ds.icls){introPick=ds.icls;return renderIntro()}
+  if(ds.sv){const n=+ds.sv;if(n===SV){introStep=introFirst;return renderIntro()}
+    save();noSave=1;try{localStorage.setItem('nqsd_sv',n)}catch(_){}return location.reload()}
   if(ds.tab){nhvTab=ds.tab;return renderWin()}
   if(ds.rtab){renTab=ds.rtab;return renderWin()}
   if(ds.tal){const [bi,i]=ds.tal.split('-').map(Number);if(talPts()<1||!talOpen(bi,i)||talR(bi,i)>=TAL_MAX)return;G.tal[bi+'-'+i]=talR(bi,i)+1;sfx('ok');refresh();dirty=1;save();return renderWin()}
@@ -2336,6 +2354,8 @@ document.addEventListener('click',e=>{
     case 'talreset':{if(G.gem<100)return;G.gem-=100;G.tal={};refresh();dirty=1;save();return renderWin()}
     case 'bxhgift':{if(!canBxh())return;const L=ladder(),r=L.findIndex(x=>x.me)+1,g=rankGift(r);G.gem+=g;G.bxhDay=today();sfx('coin');dirty=1;save();return toast('Thưởng hạng '+r+': +'+g+' ngọc','#8fe3ff')}
     case 'shopref':{const c=shopRef();if(G.gem<c)return;G.gem-=c;const r=G.shop.ref+1;shopRoll();G.shop.ref=r;dirty=1;save();return renderWin()}
+    case 'svlist':if(!introOn){closeWin();showIntro(0)}introStep=3;return renderIntro();
+    case 'svback':introStep=introFirst;return renderIntro();
     case 'intronext':G.name=$('inName').value.trim().slice(0,14)||NAME_GOI[0];introStep=2;return renderIntro();
     case 'introstart':case 'introgo':return introDone();
     case 'tutskip':G.tut=-1;save();return tutPos();
@@ -2386,7 +2406,18 @@ let tt;
 function toast(s,c){const t=$('toast');t.textContent=s;t.style.setProperty('--tc',c||'#f6c64f');t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2400)}
 
 /* ---------- lưu và khởi động ---------- */
-const KEY='nqsd_v1';
+const SV_BASE=Date.parse('2026-10-01T09:00:00+07:00');
+const SV_NAMES=['Thăng Long','Phố Hiến','Hội An','Kinh Bắc','Tràng An','Bạch Đằng','Hoa Lư','Lam Sơn','Cổ Loa','Phú Xuân','Đông Đô','Mê Linh','Vạn Kiếp','Chi Lăng','Đống Đa','Hồng Lĩnh','Tây Sơn','Gia Định','Thiên Trường','Văn Lang'];
+// 8 máy chủ đầu mở cách nhau 3 ngày (S8 mở 22/10), sau đó cứ 7 ngày tự mở thêm 1 máy chủ mới
+function servers(){const now=Date.now(),L=[];
+  for(let i=0;i<SV_NAMES.length;i++){const open=i<8?SV_BASE+i*3*864e5:SV_BASE+21*864e5+(i-7)*7*864e5;if(open>now)break;L.push({n:i+1,name:SV_NAMES[i],open})}
+  return L.map((x,i)=>({...x,tag:i===L.length-1?['Mới','#2f9a3a']:i===L.length-2?['Tốt','#2e78b8']:['Đông','#c63b2f']}))}
+const svKey=n=>n===1?'nqsd_v1':'nqsd_v1_s'+n;
+let SV=1;try{SV=+(localStorage.getItem('nqsd_sv')||1)||1}catch(e){}
+if(!servers().some(x=>x.n===SV))SV=1;
+const KEY=svKey(SV),svCur=()=>servers().find(x=>x.n===SV);
+// nhân vật đang có ở từng máy chủ (đọc bản lưu, không mở game)
+function svChar(n){try{const g=JSON.parse(localStorage.getItem(svKey(n))||'null');return g&&g.cls?{name:g.name||CLS[g.cls].n,lv:g.lv||1,cls:g.cls}:null}catch(e){return null}}
 // noSave: đang nạp mã / xóa dữ liệu rồi tải lại trang, không ghi đè bản vừa nạp
 function save(){if(noSave||!G)return;G.lastSeen=Date.now();try{localStorage.setItem(KEY,JSON.stringify(G))}catch(e){}}
 // bản sao phòng hỏng: mỗi phút chép thêm một bản, bản chính đọc lỗi thì dùng bản này
@@ -2441,6 +2472,7 @@ window.__thu=k=>{
   if(k==='giau'){G.gem+=5000;G.gold+=1e6;G.da+=2000;G.relU=60;G.best=Math.max(G.best,45);G.tower=Math.max(G.tower,12);G.tot.sign=8;G.tot.wb=1;
     for(const kk of Object.keys(LT))ltAdd(kk,1,7);for(let i=0;i<4;i++)addBag(makeItem(6,20));refresh();dirty=1}
   if(k.startsWith('w_')){closeSheet();if(fight)endFight(false);closeSheet();const w=k.slice(2);if(w==='kham'||w==='tay'){autoEquip();renTab=w;renSel=0;openWin('ren')}else openWin(w)}
+  if(k==='sv'){closeSheet();closeWin();showIntro(0);introStep=3;renderIntro()}
   if(k==='red'){closeSheet();closeWin();showRed(makeItem(6,10))}
   if(k==='lv20'){$('redfx').hidden=true;closeSheet();closeWin();gainExp(2e5)}
   if(k==='tt'){closeSheet();G.tot.kill=150;nhvTab='tt';openWin('nhv')}
