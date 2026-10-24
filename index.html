@@ -854,18 +854,18 @@ const shopRef=()=>10+10*shop().ref;
 const costText=c=>c.gem?c.gem+' ngọc':nk(c.gold)+' vàng';
 
 /* ---------- âm thanh: tự tạo bằng WebAudio, không cần file nhạc ---------- */
-let AC=null,sfxG,musG,noiseBuf,musNext=0,musI=0,melo=4,lastS={};
+let AC=null,sfxG,musG,noiseBuf,lastS={};
 const AT=()=>AC.currentTime,mf=m=>440*2**((m-69)/12);
 // trình duyệt chỉ cho phát tiếng sau lần chạm đầu tiên, nên gọi lúc bấm ở màn mở đầu
 function audioOn(){
   if(AC){if(AC.state==='suspended')AC.resume();return}
   try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return}
   const m=AC.createDynamicsCompressor();m.connect(AC.destination);
-  sfxG=AC.createGain();sfxG.connect(m);musG=AC.createGain();musG.connect(m);
+  sfxG=AC.createGain();sfxG.connect(m);musG=AC.createGain();musG.connect(AC.destination);
   noiseBuf=AC.createBuffer(1,AC.sampleRate*.6|0,AC.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
-  vol();setInterval(music,100);
+  vol();setInterval(music,500);music();
 }
-function vol(){if(!AC)return;sfxG.gain.value=G.set.sfx?.5:0;musG.gain.value=G.set.mus?.14:0}
+function vol(){if(!AC)return;sfxG.gain.value=G.set.sfx?.5:0;musG.gain.value=G.set.mus?.22:0}
 function tone(f,t0,dur,type='square',v=.3,f2,dest=sfxG){const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t0);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t0+dur);
   g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(v,t0+.008);g.gain.exponentialRampToValueAtTime(.001,t0+dur);o.connect(g);g.connect(dest);o.start(t0);o.stop(t0+dur+.02)}
 function noise(t0,dur,v=.3,fq=1200,q=1,type='bandpass'){const s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();s.buffer=noiseBuf;f.type=type;f.frequency.value=fq;f.Q.value=q;
@@ -889,18 +889,36 @@ const SFX={
 };
 function sfx(k,a){if(!AC||!G.set.sfx||document.hidden)return;const now=performance.now();if(now-(lastS[k]||0)<(k==='hit'?70:k==='coin'?90:40))return;lastS[k]=now;try{SFX[k](a)}catch(e){}}
 function vib(p){if(G.set.vib&&navigator.vibrate)try{navigator.vibrate(p)}catch(e){}}
-// nhạc nền tự sinh: hợp âm 4 nhịp + giai điệu ngũ cung; vùng tối và trận riêng chuyển giọng thứ, nhanh hơn
+// nhạc nền: dựng sẵn 1 đoạn 8 ô nhịp (OfflineAudioContext) rồi phát lặp như file nhạc,
+// không xếp từng nốt lúc chơi nữa (game bận vẽ thì nốt trễ, nghe khựng: người dùng báo 24/10).
+// 3 bản: giọng trưởng (vùng sáng), giọng thứ (vùng tối), giọng thứ nhanh (trận riêng); đổi bản thì chuyển dần 1,2 giây
 const MAJ={ch:[[0,4,7],[9,12,16],[5,9,12],[7,11,14]],sc:[0,2,4,7,9,12,14,16],root:48};
 const MIN={ch:[[0,3,7],[-4,0,3],[3,7,10],[-2,2,5]],sc:[0,3,5,7,10,12,15,17],root:45};
+const MUS={maj:[MAJ,86],min:[MIN,86],fight:[MIN,124]};
+const musBuf={},musMaking={};let musCur=null,musSrc=null,musFade=null;
+function makeLoop(k){
+  const [K,bpm]=MUS[k],st=60/bpm/2,steps=64,dur=steps*st,sr=22050;
+  const OC=window.OfflineAudioContext||window.webkitOfflineAudioContext,oc=new OC(1,Math.ceil(sr*dur),sr),R=rng(K.root*31+bpm);let m=4;
+  const note=(f,t0,d,type,v)=>{const end=Math.min(dur-.01,t0+d),o=oc.createOscillator(),g=oc.createGain();o.type=type;o.frequency.value=f;
+    g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(v,t0+.02);g.gain.exponentialRampToValueAtTime(.001,end);o.connect(g);g.connect(oc.destination);o.start(t0);o.stop(end+.005)};
+  for(let i=0;i<steps;i++){const t=i*st,ch=K.ch[Math.floor(i/8)%4],b2=i%8;
+    if(b2%4===0)note(mf(K.root+ch[0]-12),t,st*3.6,'triangle',.5);
+    if(b2%2===1)note(mf(K.root+ch[1+(b2>>2&1)]),t,st*1.3,'triangle',.15);
+    // giai điệu: đi từng bậc ngũ cung, nốt đầu ô nhịp rơi vào nốt của hợp âm cho êm; ô cuối nghỉ để vòng lặp nối liền
+    if(i<steps-2&&(b2===0||R()<.55)){m=b2===0?K.sc.indexOf(ch[0]%12)>=0?K.sc.indexOf(ch[0]%12):m:Math.max(0,Math.min(K.sc.length-1,m+Math.floor(R()*3)-1));
+      note(mf(K.root+12+K.sc[m]),t,st*(b2===0?2.4:1.6),'sine',.22)}}
+  const pr=oc.startRendering();
+  return pr&&pr.then?pr:new Promise(ok=>{oc.oncomplete=e=>ok(e.renderedBuffer)});
+}
 function music(){
-  if(!AC||!G.set.mus||document.hidden)return;
-  const K=fight||curReg()>=3?MIN:MAJ,st=60/(fight?124:86)/2;
-  if(musNext<AC.currentTime)musNext=AC.currentTime+.05;
-  while(musNext<AC.currentTime+.35){const ch=K.ch[Math.floor(musI/8)%4],b=musI%8;
-    if(b%4===0)tone(mf(K.root+ch[0]-12),musNext,st*3.5,'triangle',.5,null,musG);
-    if(b%2===1)tone(mf(K.root+ch[1+(b>>2&1)]),musNext,st*1.2,'triangle',.16,null,musG);
-    if(Math.random()<.6){melo=Math.max(0,Math.min(K.sc.length-1,melo+rnd(3)-1));tone(mf(K.root+12+K.sc[melo]),musNext,st*1.6,'sine',.2,null,musG)}
-    musNext+=st;musI++}
+  if(!AC||document.hidden)return;
+  const k=fight?'fight':curReg()>=3?'min':'maj';
+  if(!musBuf[k]){if(!musMaking[k]){musMaking[k]=1;makeLoop(k).then(bf=>{musBuf[k]=bf;music()}).catch(()=>{})}return}
+  if(musCur===k&&musSrc)return;
+  const now=AC.currentTime,g=AC.createGain(),src=AC.createBufferSource();src.buffer=musBuf[k];src.loop=true;
+  g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(1,now+1.2);src.connect(g);g.connect(musG);src.start(now);
+  if(musSrc){const os=musSrc,og=musFade;og.gain.cancelScheduledValues(now);og.gain.setValueAtTime(og.gain.value,now);og.gain.linearRampToValueAtTime(0,now+1.2);os.stop(now+1.3)}
+  musSrc=src;musFade=g;musCur=k;
 }
 
 /* ---------- nhật ký (chỗ khung trò chuyện của game mẫu) ---------- */
@@ -2374,7 +2392,8 @@ function save(){if(noSave||!G)return;G.lastSeen=Date.now();try{localStorage.setI
 // bản sao phòng hỏng: mỗi phút chép thêm một bản, bản chính đọc lỗi thì dùng bản này
 setInterval(()=>{if(G&&!noSave)try{localStorage.setItem(KEY+'_bak',JSON.stringify(G))}catch(e){}},60000);
 // quay lại game sau khi để ẩn (chuyển ứng dụng, tắt màn hình) cũng tính thưởng treo máy
-document.addEventListener('visibilitychange',()=>{if(!G)return;if(document.hidden)save();else if(!fight&&!open&&!introOn)offline()});
+document.addEventListener('visibilitychange',()=>{if(AC)try{document.hidden?AC.suspend():AC.resume()}catch(e){}
+  if(!G)return;if(document.hidden)save();else if(!fight&&!open&&!introOn)offline()});
 function seed(){
   G={stage:1,kill:0,gold:1500,gem:500,da:30,pity:0,auto:[true,true,false,false,false,false,false],eq:[null,null,null,null,null,null],bag:[],uid:0};
   G.eq[0]=makeItem(0,1,0);G.eq[2]=makeItem(1,1,2);
