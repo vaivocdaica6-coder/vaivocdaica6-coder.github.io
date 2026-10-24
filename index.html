@@ -1170,6 +1170,7 @@ function addBag(it){
   G.bag.push(it);dirty=1;
 }
 function heroDown(){
+  hero.down=.9;
   burst(HX(),GY()-25*U(),20,'#ffffff',{sp:140});
   G.stage=Math.max(1,G.stage-1);G.kill=0;hero.hp=hero.max;spawn();
   toast('Bị hạ! Lùi về ải '+G.stage+'. Mặc đồ mạnh hơn hoặc cường hóa rồi đánh tiếp','#ff6b6b');log('Ải','Bị hạ, lùi về ải '+G.stage,'#ff8a80');dirty=1;
@@ -1181,7 +1182,7 @@ function heroHurt(d,c){
 function step(dt){
   clock+=dt;
   for(let i=0;i<3;i++)cds[i]=Math.max(0,cds[i]-dt);
-  hero.war=Math.max(0,hero.war-dt);hero.shield=Math.max(0,hero.shield-dt);hero.hurt=Math.max(0,(hero.hurt||0)-dt);
+  hero.war=Math.max(0,hero.war-dt);hero.shield=Math.max(0,hero.shield-dt);hero.hurt=Math.max(0,(hero.hurt||0)-dt);hero.down=Math.max(0,(hero.down||0)-dt);
   if(hero.atk>=0){hero.atk+=dt;if(hero.atk>.3)hero.atk=-1}
   for(const x of timers)x.t-=dt;
   const due=timers.filter(x=>x.t<=0);timers=timers.filter(x=>x.t>0);due.forEach(x=>x.fn());
@@ -1426,8 +1427,50 @@ function ln(p,c,w,ow){ctx.lineCap=ctx.lineJoin='round';for(const [cc,ww] of [[OL
 function eye(x,y,r,lx=-1){ctx.beginPath();ctx.ellipse(x,y,r,r*1.15,0,0,7);fo('#fff',Math.max(1.2,r*.35));ctx.beginPath();ctx.arc(x+lx*r*.32,y+r*.1,r*.58,0,7);ctx.fillStyle='#120a06';ctx.fill();ctx.beginPath();ctx.arc(x+lx*r*.1,y-r*.22,r*.22,0,7);ctx.fillStyle='#fff';ctx.fill()}
 function star5(x,y,r,c){ctx.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.45:r;ctx.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr)}ctx.closePath();fo(c,1.2)}
 const HATC={cb:'#c9d2dc',ct:'#3f8a3a',ps:'#5a4ad0'};
+/* ---------- nhân vật 3D: tấm ảnh chụp từ Blender (blender/nv3d.py xuat → dong_tam.py), thư mục sprites/ ----------
+   mỗi lớp: than (người), m0..m3 (vùng mũ, áo, găng, giày để nhuộm màu bậc đồ), vk0..vk3 (vũ khí Trắng-Lục, Xanh-Tím, Cam-Hồng, Đỏ).
+   Ảnh chưa tải được (mở file lẻ) thì vẽ người que như cũ. Ảnh gốc quay mặt sang trái. */
+const SPR=/*SPR*/{"cb":{"fw":320,"fh":241,"cot":8,"ax":128.0,"ay":217.0,"cao":196.0},"ps":{"fw":250,"fh":284,"cot":8,"ax":84.0,"ay":252.0,"cao":215.0},"ct":{"fw":250,"fh":233,"cot":8,"ax":88.0,"ay":216.0,"cao":202.0}}/*SPR_HET*/;
+const SPA={dung:[0,12],chay:[12,12],danh:[24,12],trung:[36,8],nga:[44,12]};
+const SPI={};
+function sprImg(f){const i=new Image();i.src='sprites/'+f+'.webp';return i}
+function sprLoad(l){if(!SPR[l])return null;
+  if(!SPI[l])SPI[l]={than:sprImg(l+'_than'),m:[0,1,2,3].map(i=>sprImg(l+'_m'+i)),vk:[0,1,2,3].map(i=>sprImg(l+'_vk'+i)),tint:{}};
+  const s=SPI[l];return [s.than,...s.m,...s.vk].every(i=>i.complete&&i.naturalWidth)?s:null}
+// nhuộm: vùng nào đang mặc đồ thì mang màu bậc đồ đó, giữ sáng tối của ảnh gốc; nhớ sẵn theo bộ màu
+function sprTint(s,cols){const k=cols.join();if(s.tint[k])return s.tint[k];
+  const c=document.createElement('canvas');c.width=s.than.naturalWidth;c.height=s.than.naturalHeight;const x=c.getContext('2d');x.drawImage(s.than,0,0);
+  const t=document.createElement('canvas');t.width=c.width;t.height=c.height;const tx=t.getContext('2d');
+  cols.forEach((col,i)=>{if(!col)return;
+    tx.globalCompositeOperation='copy';tx.drawImage(s.m[i],0,0);tx.globalCompositeOperation='source-in';tx.fillStyle=col;tx.fillRect(0,0,t.width,t.height);
+    x.globalCompositeOperation='color';x.globalAlpha=.55;x.drawImage(t,0,0);x.globalCompositeOperation='soft-light';x.globalAlpha=.35;x.drawImage(t,0,0);x.globalAlpha=1});
+  x.globalCompositeOperation='source-over';
+  const ks=Object.keys(s.tint);if(ks.length>8)delete s.tint[ks[0]];
+  return s.tint[k]=c}
+const wTier=t=>t>=6?3:t>=4?2:t>=2?1:0;
+// o như người que + o.hurt (giây trúng đòn còn lại, .15 → 0), o.down (giây ngã còn lại, .9 → 0)
+function hero3d(x,gy,u,o){const l=o.cls||'cb',s=sprLoad(l);if(!s)return false;const M=SPR[l];
+  let a='dung',f,f2=-1,mix=0;
+  if(o.down>0)f=Math.min(11,Math.floor((1-o.down/.9)*13)),a='nga';
+  else if(o.hurt>0)f=Math.min(4,Math.floor((1-o.hurt/.15)*5)),a='trung';
+  else if(o.atk>=0)f=Math.min(11,Math.floor(o.atk*12)),a='danh';
+  else if(o.run!=null)f=((Math.floor(o.run/(2*Math.PI)*12)%12)+12)%12,a='chay';
+  else{const p=(clock+(o.ph||0))*6;f=Math.floor(p)%12;f2=(f+1)%12;mix=p%1}
+  const k=50*u/M.cao,body=sprTint(s,[o.hatC,o.capeC,o.gloveC,o.bootC]),vk=s.vk[wTier(o.wpnT||0)];
+  const glow=(o.wpnT||0)>=4||(o.wpnP||0)>=10;
+  ctx.save();ctx.translate(x,gy);
+  ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.ellipse(0,0,12*u,3*u,0,0,7);ctx.fill();
+  ctx.scale(-(o.dir||1)*k,k);
+  if(o.filter)ctx.filter=o.filter;else if(o.hurt>0)ctx.filter='brightness(1.7) saturate(.6)';
+  const one=(i,al)=>{const j=SPA[a][0]+i,sx=(j%M.cot)*M.fw,sy=Math.floor(j/M.cot)*M.fh;ctx.globalAlpha=al;
+    ctx.drawImage(body,sx,sy,M.fw,M.fh,-M.ax,-M.ay,M.fw,M.fh);
+    if(glow){ctx.shadowColor=o.wpnC||'#fff';ctx.shadowBlur=14}
+    ctx.drawImage(vk,sx,sy,M.fw,M.fh,-M.ax,-M.ay,M.fw,M.fh);ctx.shadowBlur=0};
+  const a0=ctx.globalAlpha;one(f,a0);if(f2>=0&&mix>.05)one(f2,a0*mix);
+  ctx.restore();return true}
 // người que: o.dir hướng, o.cls lớp, màu mũ/áo choàng/găng/giày/vũ khí theo bậc đồ đang mặc; o.atk 0..1 đang đánh; o.run pha chạy
 function stick(x,gy,u,o){
+  if(hero3d(x,gy,u,o))return;
   const d=o.dir||1,L=Math.max(2.6,2.3*u),OW=Math.max(2,1.5*u),B=o.body||'#ffffff',run=o.run,cl=o.cls,atk=o.atk??-1;
   ctx.save();ctx.translate(x,gy);
   ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.ellipse(0,0,12*u,3*u,0,0,7);ctx.fill();
@@ -1621,7 +1664,7 @@ function drawMon(u,gy){
   const x=monX();ctx.save();ctx.globalAlpha=a;
   if(mon.pvp){const C=CLS[mon.cls];
     for(const v of [mon.war>0?'#f6c64f':null,mon.shield>0?'#8fe3ff':null])if(v){ctx.globalAlpha=.3*a;ctx.fillStyle=v;ctx.beginPath();ctx.ellipse(x,gy-26*u,17*u,31*u,0,0,7);ctx.fill();ctx.globalAlpha=a}
-    stick(x,gy,u,{dir:-1,cls:mon.cls,body:mon.hit>0?'#ffd0d0':'#2b2420',eyeC:'#ffffff',hatC:sh(C.c,-.1),capeC:C.c,wpnC:C.c,wpnT:4,atk:mon.lunge>0?1-mon.lunge/.22:-1,run:mon.enter>0?clock*13:null,ph:1})}
+    stick(x,gy,u,{dir:-1,cls:mon.cls,body:mon.hit>0?'#ffd0d0':'#2b2420',eyeC:'#ffffff',hatC:sh(C.c,-.1),capeC:C.c,wpnC:C.c,wpnT:4,atk:mon.lunge>0?1-mon.lunge/.22:-1,run:mon.enter>0?clock*13:null,hurt:mon.hit,filter:mon.hit>0?'brightness(1.7)':'brightness(.8) contrast(1.1)',ph:1})}
   else{const sp=MT[mon.ty],s=u*monK(),t=clock+mon.seed;
     ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.ellipse(x,gy,(sp.fly?9:14)*s,3*s,0,0,7);ctx.fill();
     if(mon.boss){const p=.5+.5*Math.sin(clock*4);ctx.save();ctx.globalAlpha=a*(.35+.25*p);const g=ctx.createRadialGradient(x,gy,1,x,gy,26*s);g.addColorStop(0,'#ff5a3a');g.addColorStop(1,'rgba(255,60,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,gy,26*s,7*s,0,0,7);ctx.fill();ctx.restore()}
@@ -1694,8 +1737,12 @@ function drawAura(x,gy,u){const A=G.skin&&G.skin.aura&&SKINS.find(k=>k.k===G.ski
 function drawHero(u,gy){
   const hx=HX()+(hero.lunge>0?Math.sin(hero.lunge/.2*Math.PI)*12*u:0);
   drawAura(hx,gy,u);drawPet(u,gy);
+  // mặc đủ 6 món một bộ Đỏ: hào quang đỏ quanh người + tàn lửa bay lên
+  if(maxSet()>=6){const p=.5+.5*Math.sin(clock*3),g=ctx.createRadialGradient(hx,gy-26*u,4*u,hx,gy-26*u,34*u);g.addColorStop(0,`rgba(255,60,40,${.28+.12*p})`);g.addColorStop(1,'rgba(255,40,20,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(hx,gy-26*u,24*u,36*u,0,0,7);ctx.fill();
+    if(ctx===mainCtx&&Math.random()<.3)parts.push({k:'flame',x:hx+(Math.random()-.5)*24*u,y:gy-Math.random()*40*u,vx:0,vy:-30*u/1.6,g:0,t:0,life:.7,s:2,c:Math.random()<.5?'#ff4a2a':'#ffd34d'})}
   if(hero.war>0){const p=.5+.5*Math.sin(clock*8);const g=ctx.createRadialGradient(hx,gy-24*u,2,hx,gy-24*u,30*u);g.addColorStop(0,'rgba(255,214,90,'+(.35+.15*p)+')');g.addColorStop(1,'rgba(255,170,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(hx,gy-24*u,22*u,34*u,0,0,7);ctx.fill()}
-  stick(hx,gy,u,{...heroLook(),body:hero.hurt>0?'#ffc8c0':'#ffffff',atk:hero.atk>=0?hero.atk/.3:-1,run:hero.run});
+  stick(hx,gy,u,{...heroLook(),body:hero.hurt>0?'#ffc8c0':'#ffffff',atk:hero.atk>=0?hero.atk/.3:-1,run:hero.run,hurt:hero.hurt,down:hero.down});
   if(hero.shield>0){const r=26*u,cy=gy-24*u;ctx.save();ctx.beginPath();for(let i=0;i<6;i++){const an=Math.PI/6+i*Math.PI/3;ctx.lineTo(hx+Math.cos(an)*r*.85,cy+Math.sin(an)*r)}ctx.closePath();
     ctx.globalAlpha=.2+.06*Math.sin(clock*6);ctx.fillStyle='#8fe3ff';ctx.fill();ctx.globalAlpha=.9;ctx.strokeStyle='#dff8ff';ctx.lineWidth=2;ctx.shadowColor='#8fe3ff';ctx.shadowBlur=12;ctx.stroke();ctx.restore()}
   hpbar(HX(),gy-70*u,32*u,hero.hp/hero.max,hero.hp/hero.max,'#4fd35f');
@@ -2476,6 +2523,9 @@ window.__thu=k=>{
   if(k==='red'){closeSheet();closeWin();showRed(makeItem(6,10))}
   if(k==='lv20'){$('redfx').hidden=true;closeSheet();closeWin();gainExp(2e5)}
   if(k==='tt'){closeSheet();G.tot.kill=150;nhvTab='tt';openWin('nhv')}
+  // mcb6 = lớp Chiến Binh mặc đủ 6 món bậc 6 (Đỏ cùng một bộ); soi diện mạo nhân vật 3D
+  if(/^m(cb|ct|ps)\d$/.test(k)){closeSheet();closeWin();if(fight)endFight(false);setCls(k.slice(1,3));const t=+k[3],sk=Object.keys(SETS)[0];
+    G.eq=[0,1,2,3,4,5].map(si=>makeItem(t,G.lv,si,t===6?sk:undefined));refresh();dirty=1}
 };
 // giả lập cân bằng (chỉ dùng khi chạy thử): mỗi ngày chơi tay 1 giờ (5 phút mặc đồ, cường hóa, cầu nguyện một lần) rồi treo máy 12 giờ
 window.__sim=(days=7,activeH=1)=>{
