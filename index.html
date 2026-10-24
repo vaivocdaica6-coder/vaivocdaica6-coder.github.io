@@ -821,7 +821,7 @@ const PETS=[
   {k:'cho',n:'Chó Vàng',c:'#e0a040',st:'atkP',v:[2,.8],d:'Công',open:()=>true,how:'Có sẵn'},
   {k:'meo',n:'Mèo Mướp',c:'#a0a0b0',st:'crit',v:[1,.35],d:'Chí mạng',open:()=>G.best>=11,how:'Qua ải 10'},
   {k:'ga',n:'Gà Chọi',c:'#e0463a',st:'spd',v:[2,.8],d:'Tốc đánh',open:()=>(G.tower||0)>=10,how:'Leo tháp tầng 10'},
-  {k:'rua',n:'Rùa Thần',c:'#4fb85f',st:'hpP',v:[3,1.1],d:'Máu',open:()=>(G.tot.sign||0)>=7,how:'Điểm danh đủ 7 ngày'},
+  {k:'rua',n:'Xương Rồng Thần',c:'#4fb85f',st:'hpP',v:[3,1.1],d:'Máu',open:()=>(G.tot.sign||0)>=7,how:'Điểm danh đủ 7 ngày'},
   {k:'rong',n:'Rồng Con',c:'#ff6a2a',st:'cdmg',v:[6,2.2],d:'ST chí mạng',open:()=>(G.tot.wb||0)>=1,how:'Hạ 1 trùm thế giới'},
 ];
 const PET_MAX=30;
@@ -1661,7 +1661,7 @@ function plate(x,y,s,c,fs){ctx.font=`700 ${fs}px "Baloo 2",sans-serif`;ctx.textA
   ctx.fillStyle='rgba(20,10,4,.62)';ctx.beginPath();ctx.roundRect(x-w/2,y-fs*.62,w,fs*1.24,fs*.4);ctx.fill();ctx.fillStyle=c;ctx.fillText(s,x,y+1)}
 /* ---------- quái 3D: tấm ảnh chụp từ Blender (blender/quai3d.py xuat → dong_quai.py), sprites/q_<loại>.webp ----------
    động tác theo thứ tự: đứng, đi vào, đánh, trúng đòn, chết (số khung ở so). Quái quay mặt sang trái. Chưa có ảnh thì vẽ nét như cũ. */
-const QSPR=/*QSPR*/{"cua":{"fw":295,"fh":270,"cot":8,"ax":108.2,"ay":214.2,"cao":200.3,"so":[12,10,10,6,10]},"doi":{"fw":437,"fh":286,"cot":8,"ax":294.3,"ay":153.8,"cao":138.9,"so":[12,10,10,6,10]},"hon":{"fw":289,"fh":244,"cot":8,"ax":149.7,"ay":208.5,"cao":199.9,"so":[12,10,10,6,10]},"lua":{"fw":361,"fh":250,"cot":8,"ax":155.0,"ay":221.6,"cao":200.3,"so":[12,10,10,6,10]},"mat":{"fw":254,"fh":248,"cot":8,"ax":167.0,"ay":207.9,"cao":199.8,"so":[12,10,10,6,10]},"nam":{"fw":253,"fh":236,"cot":8,"ax":113.1,"ay":212.9,"cao":199.6,"so":[12,10,10,6,10]},"nhay":{"fw":320,"fh":271,"cot":8,"ax":152.8,"ay":222.9,"cao":199.7,"so":[12,10,10,6,10]},"ran":{"fw":301,"fh":230,"cot":8,"ax":170.4,"ay":213.7,"cao":200.1,"so":[12,10,10,6,10]},"rong":{"fw":370,"fh":242,"cot":8,"ax":213.8,"ay":211.4,"cao":200.3,"so":[12,10,10,6,10]},"thanda":{"fw":372,"fh":242,"cot":8,"ax":145.6,"ay":228.2,"cao":199.8,"so":[12,10,10,6,10]},"xuong":{"fw":354,"fh":243,"cot":8,"ax":127.5,"ay":222.4,"cao":200.2,"so":[12,10,10,6,10]}}/*QSPR_HET*/;
+const QSPR=/*QSPR*/{"cua":{"fw":295,"fh":270,"cot":8,"ax":108.2,"ay":214.2,"cao":200.3,"so":[12,10,10,6,10]},"doi":{"fw":437,"fh":286,"cot":8,"ax":294.3,"ay":153.8,"cao":138.9,"so":[12,10,10,6,10]},"hon":{"fw":289,"fh":244,"cot":8,"ax":149.7,"ay":208.5,"cao":199.9,"so":[12,10,10,6,10]},"lua":{"fw":361,"fh":250,"cot":8,"ax":155.0,"ay":221.6,"cao":200.3,"so":[12,10,10,6,10]},"mat":{"fw":254,"fh":248,"cot":8,"ax":167.0,"ay":207.9,"cao":199.8,"so":[12,10,10,6,10]},"nam":{"fw":253,"fh":236,"cot":8,"ax":113.1,"ay":212.9,"cao":199.6,"so":[12,10,10,6,10]},"nhay":{"fw":320,"fh":271,"cot":8,"ax":152.8,"ay":222.9,"cao":199.7,"so":[12,10,10,6,10]},"ran":{"fw":301,"fh":230,"cot":8,"ax":170.4,"ay":213.7,"cao":200.1,"so":[12,10,10,6,10]},"rong":{"fw":370,"fh":242,"cot":8,"ax":213.8,"ay":211.4,"cao":200.3,"so":[12,10,10,6,10]},"thanda":{"fw":372,"fh":242,"cot":8,"ax":145.6,"ay":228.2,"cao":199.8,"so":[12,10,10,6,10]},"xuong":{"fw":354,"fh":243,"cot":8,"ax":127.5,"ay":222.4,"cao":200.2,"so":[12,10,10,6,10]},"p_cho":{"fw":165,"fh":124,"cot":8,"ax":75.1,"ay":110.3,"cao":99.8,"so":[12,10,10,6,10]},"p_meo":{"fw":160,"fh":127,"cot":8,"ax":68.8,"ay":113.2,"cao":99.8,"so":[12,10,10,6,10]},"p_ga":{"fw":141,"fh":122,"cot":8,"ax":59.2,"ay":110.7,"cao":100.0,"so":[12,10,10,6,10]},"p_rua":{"fw":148,"fh":130,"cot":8,"ax":69.3,"ay":106.4,"cao":100.0,"so":[12,10,10,6,10]},"p_rong":{"fw":323,"fh":248,"cot":8,"ax":205.2,"ay":121.3,"cao":100.0,"so":[12,10,10,6,10]}}/*QSPR_HET*/;
 const QTINT={thanda:'color'};  // cách nhuộm màu vùng/ải: mặc định 'hue' (chỉ đổi sắc, mắt trắng giữ trắng); Thần Đá nhuộm hẳn thành màu đá
 const QI={};
 function qLoad(ty){if(!QSPR[ty])return null;if(!QI[ty])QI[ty]={im:sprImg('q_'+ty),tint:{}};const q=QI[ty];return q.im.complete&&q.im.naturalWidth?q:null}
@@ -1702,7 +1702,19 @@ function drawMon(u,gy){
 }
 
 /* ---------- thú cưng: vẽ bằng nét có viền như người que; s = cỡ, t = thời gian để nhún, vẫy đuôi ---------- */
-function petDraw(k,x,gy,s,t,jump=0){
+// thú cưng 3D (quai3d.py xuat p_<thú> → dong_quai.py): ảnh quay trái nên lật sang phải theo chủ; o.atk 0..1 đang húc, o.run đang chạy
+const PH={cho:15,meo:15,ga:16,rua:16,rong:17};
+function pet3d(k,x,gy,s,t,o){const ty='p_'+k,q=qLoad(ty);if(!q)return false;const M=QSPR[ty],b=[0];for(const n of M.so)b.push(b[b.length-1]+n);
+  let st,f,f2=-1,mix=0;
+  if(o.atk>=0){st=2;f=Math.min(M.so[2]-1,Math.floor(o.atk*M.so[2]))}
+  else if(o.run){st=1;f=Math.floor(t*12)%M.so[1]}
+  else{st=0;const p=t*8;f=Math.floor(p)%M.so[0];f2=(f+1)%M.so[0];mix=p%1}
+  const kk=(PH[k]||15)*s/M.cao,a0=ctx.globalAlpha;
+  ctx.save();ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(x,gy,8*s,2*s,0,0,7);ctx.fill();ctx.translate(x,gy);ctx.scale(-1,1);
+  const one=(i,al)=>{const j=b[st]+i,sx=(j%M.cot)*M.fw,sy=Math.floor(j/M.cot)*M.fh;ctx.globalAlpha=al;ctx.drawImage(q.im,sx,sy,M.fw,M.fh,-M.ax*kk,-M.ay*kk,M.fw*kk,M.fh*kk)};
+  one(f,a0);if(f2>=0&&mix>.05)one(f2,a0*mix);ctx.restore();return true}
+function petDraw(k,x,gy,s,t,jump=0,o={}){
+  if(pet3d(k,x,gy,s,t,{atk:-1,...o}))return;
   const P=PETS.find(p=>p.k===k),c=P.c,dk=sh(c,-.3),b=Math.abs(Math.sin(t*5))*1.2*s+jump*6*s;
   ctx.save();ctx.translate(x,gy);
   ctx.fillStyle='rgba(0,0,0,.25)';ctx.beginPath();ctx.ellipse(0,0,8*s,2*s,0,0,7);ctx.fill();
@@ -1749,7 +1761,7 @@ function petDraw(k,x,gy,s,t,jump=0){
 const petAct=()=>{if(!G.pet||!G.pet.act||!G.pet.own[G.pet.act]||!mon||mon.dead||mon.enter>0)return null;return PETS.find(p=>p.k===G.pet.act)};
 const petPos=()=>{const u=U();return [HX()-20*u,GY()-10*u]};
 function drawPet(u,gy){if(!G.pet||!G.pet.act||!G.pet.own[G.pet.act])return;hero.pj=Math.max(0,(hero.pj||0)-1/60);
-  petDraw(G.pet.act,HX()-20*u,gy,u*.85,clock+(hero.run!=null?hero.run*.3:0),Math.sin(hero.pj/.3*Math.PI)*(hero.pj>0?1:0))}
+  petDraw(G.pet.act,HX()-20*u,gy,u*.85,clock+(hero.run!=null?hero.run*.3:0),Math.sin(hero.pj/.3*Math.PI)*(hero.pj>0?1:0),{atk:hero.pj>0?1-hero.pj/.3:-1,run:hero.run!=null})}
 // hào quang dưới chân (trang phục)
 function drawAura(x,gy,u){const A=G.skin&&G.skin.aura&&SKINS.find(k=>k.k===G.skin.aura);if(!A)return;
   const c=A.k==='cau'?`hsl(${clock*120%360},90%,60%)`:A.c,p=.5+.5*Math.sin(clock*3);
@@ -2545,6 +2557,9 @@ window.__thu=k=>{
   if(k==='red'){closeSheet();closeWin();showRed(makeItem(6,10))}
   if(k==='lv20'){$('redfx').hidden=true;closeSheet();closeWin();gainExp(2e5)}
   if(k==='tt'){closeSheet();G.tot.kill=150;nhvTab='tt';openWin('nhv')}
+  // pet_meo = cho thú đó đi theo (soi thú cưng 3D); petw = mở cửa sổ Thú cưng có đủ 5 con
+  if(k.startsWith('pet_')){closeSheet();closeWin();G.pet.own[k.slice(4)]=1;G.pet.act=k.slice(4);dirty=1}
+  if(k==='petw'){for(const P of PETS)G.pet.own[P.k]=G.pet.own[P.k]||1;closeSheet();openWin('pet')}
   // q_rong = đổi quái đang đánh thành loại đó (soi quái 3D); qb_rong = loại đó làm trùm to
   if(k.startsWith('q_')||k.startsWith('qb_')){closeSheet();closeWin();if(fight)endFight(false);const ty=k.split('_')[1];spawn();
     Object.assign(mon,{ty,col:MT[ty].c[0],enter:0,name:MT[ty].n,hp:1e15,max:1e15,atk:0},k[1]==='b'?{boss:1,big:1}:{});dirty=1}
