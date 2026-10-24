@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Bảo Khí Truyền Kỳ · Rừng Trúc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Noto+Serif:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--vang:#ffd46b;--nen:#0b0e1a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#05060c;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none;font-family:"Baloo 2",system-ui,sans-serif;color:#f4ecd8}
+[hidden]{display:none!important}
+#cv{position:fixed;inset:0;display:block}
+.hud{position:fixed;pointer-events:none;z-index:2}
+#tl{top:calc(env(safe-area-inset-top,0px) + 8px);left:10px;display:flex;flex-direction:column;gap:6px}
+.the{background:rgba(10,12,24,.72);border:1px solid rgba(255,212,107,.35);border-radius:10px;padding:5px 10px;line-height:1.15}
+.the b{color:var(--vang);font-size:15px}.the small{opacity:.8;font-size:12px}
+.xp{height:5px;background:#1d2238;border-radius:3px;margin-top:3px;overflow:hidden}.xp i{display:block;height:100%;background:linear-gradient(90deg,#7ad0ff,#c7f0ff);width:0}
+.lop{display:flex;gap:5px;pointer-events:auto}
+.lop button,.nut{font:inherit;font-size:12px;color:#f4ecd8;background:rgba(18,22,40,.85);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:3px 8px;cursor:pointer}
+.lop button.on{border-color:var(--vang);color:var(--vang)}
+#do{display:flex;gap:4px}#do i{width:16px;height:16px;border-radius:4px;border:1px solid rgba(255,255,255,.25);background:#222}
+#tr{top:calc(env(safe-area-inset-top,0px) + 8px);right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+#mm{width:118px;height:118px;border-radius:12px;border:1px solid rgba(255,212,107,.35);background:rgba(8,10,20,.6)}
+#vang{font-size:14px}
+.orb{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);width:78px;height:78px;border-radius:50%;overflow:hidden;border:3px solid #b08a3c;box-shadow:0 0 0 2px #2a1d08,inset 0 0 18px rgba(0,0,0,.8);background:#120a0a;z-index:2;pointer-events:none}
+.orb i{position:absolute;left:0;right:0;bottom:0;height:100%;transition:height .15s}
+.orb span{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;text-shadow:0 1px 2px #000}
+#hp{left:12px}#hp i{background:radial-gradient(circle at 35% 30%,#ff8a7a,#c0161b 55%,#5a0508)}
+#mp{left:98px}#mp i{background:radial-gradient(circle at 35% 30%,#9fd8ff,#1c5fd6 55%,#08214f)}
+#mp.day{box-shadow:0 0 0 2px #2a1d08,0 0 22px #ffd46b,inset 0 0 18px rgba(0,0,0,.8);border-color:#ffd46b}
+#br{position:fixed;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);display:flex;gap:10px;align-items:flex-end;z-index:3}
+.kn{position:relative;width:62px;height:62px;border-radius:50%;border:2px solid #b08a3c;background:radial-gradient(circle at 40% 35%,#3a3f63,#121527);color:#fff;font:800 12px "Baloo 2",sans-serif;line-height:1.05;cursor:pointer;display:grid;place-items:center;text-align:center;padding:4px;overflow:hidden}
+.kn .cd{position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(0,0,0,.7) var(--p,0%),transparent 0);pointer-events:none}
+#ult{width:76px;height:76px;border-color:#ffd46b;background:radial-gradient(circle at 40% 35%,#6b4a10,#1e1404)}
+#ult.san{animation:nhay 1s infinite alternate}
+@keyframes nhay{to{box-shadow:0 0 26px #ffd46b}}
+#auto{width:auto;height:auto;border-radius:10px;padding:6px 10px}
+#auto.on{border-color:#7dff9a;color:#7dff9a}
+#intro{position:fixed;inset:0;z-index:10;background:radial-gradient(ellipse at 50% 60%,#16203a,#04050a 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;cursor:pointer}
+#intro h1{margin:0;font-size:clamp(30px,7vw,54px);color:var(--vang);text-shadow:0 0 24px rgba(255,190,80,.5);letter-spacing:1px}
+#intro p{margin:0;font-family:"Noto Serif",serif;font-style:italic;font-size:clamp(15px,2.6vw,20px);max-width:720px;opacity:0;transition:opacity 1.2s}
+#intro p.on{opacity:.92}
+#intro .bat{margin-top:10px;font-size:15px;opacity:.75;animation:tho 1.6s infinite alternate}
+@keyframes tho{to{opacity:.3}}
+#rot{position:fixed;inset:0;z-index:11;background:#05060c;display:none;place-items:center;text-align:center;padding:30px;font-size:18px}
+@media (orientation:portrait) and (max-width:700px){#rot.can{display:grid}}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="hud" id="tl">
+  <div class="the"><b id="ten">Chiến Binh</b> <small id="cap">Cấp 1</small><div class="xp"><i id="xp"></i></div></div>
+  <div class="lop"><button data-l="cb">Chiến Binh</button><button data-l="ct">Cung Thủ</button><button data-l="ps">Pháp Sư</button></div>
+  <div class="the" style="display:flex;gap:8px;align-items:center"><small>Đồ đang mặc</small><div id="do"></div></div>
+</div>
+<div class="hud" id="tr"><canvas id="mm" width="236" height="236"></canvas><div class="the" id="vang">Vàng 0 · Hạ 0</div><button class="nut" id="am" style="pointer-events:auto">Âm thanh: bật</button></div>
+<div class="orb" id="hp"><i></i><span></span></div>
+<div class="orb" id="mp"><i></i><span></span></div>
+<div id="br">
+  <button class="nut kn" id="auto">TỰ ĐÁNH<br>BẬT</button>
+  <button class="kn" id="k1"><span id="k1t">Chém Xoáy</span><div class="cd"></div></button>
+  <button class="kn" id="ult">GƯƠM<br>THUẬN<br>THIÊN<div class="cd"></div></button>
+</div>
+<div id="intro">
+  <h1>Bảo Khí Truyền Kỳ</h1>
+  <p>Xưa kia, các bảo khí giữ yên bờ cõi đất Việt.</p>
+  <p>Một đêm, Ma Giới tràn lên. Bảo khí vỡ thành ngàn mảnh, rơi khắp núi rừng.</p>
+  <p>Rùa Vàng đi tìm người đủ sức gom chúng lại…</p>
+  <div class="bat" id="bat">Đang tải…</div>
+</div>
+<div id="rot">Xoay ngang điện thoại để chơi nhé 📱↻</div>
+<script>
+/* Màn đánh mẫu góc chéo (học cách làm của LUMINA CUBE, chất riêng truyền thuyết Việt).
+   Ảnh: sprites/ do blender/dong_iso.py ghép; số đo nằm trong khối ISO dưới đây (tự ghi, đừng sửa tay).
+   Quy ước thế giới (mét): +x hiện xuống-phải, +y hiện lên-phải; màn = (x+y)*.7071*Z, (x-y)*.3536*Z - z*.866*Z. */
+const M=/*ISO*/{"cb_ne":{"fw":179,"fh":174,"cot":8,"ax":96.0,"ay":125.1,"P":64,"so":[12,12,12,8,12]},"cb_se":{"fw":192,"fh":136,"cot":8,"ax":96.0,"ay":119.1,"P":64,"so":[12,12,12,8,12]},"ct_ne":{"fw":139,"fh":165,"cot":8,"ax":87.0,"ay":116.1,"P":64,"so":[12,12,12,8,12]},"ct_se":{"fw":137,"fh":129,"cot":8,"ax":96.0,"ay":112.1,"P":64,"so":[12,12,12,8,12]},"ps_ne":{"fw":155,"fh":171,"cot":8,"ax":93.0,"ay":122.1,"P":64,"so":[12,12,12,8,12]},"ps_se":{"fw":149,"fh":162,"cot":8,"ax":96.0,"ay":143.1,"P":64,"so":[12,12,12,8,12]},"q_doi_ne":{"fw":257,"fh":168,"cot":8,"ax":130.0,"ay":148.2,"P":128,"so":[12,10,10,6,10]},"q_doi_se":{"fw":257,"fh":197,"cot":8,"ax":130.0,"ay":165.3,"P":128,"so":[12,10,10,6,10]},"q_hon_ne":{"fw":188,"fh":160,"cot":8,"ax":69.8,"ay":147.2,"P":128,"so":[12,10,10,6,10]},"q_hon_se":{"fw":187,"fh":203,"cot":8,"ax":69.7,"ay":151.0,"P":128,"so":[12,10,10,6,10]},"q_nam_ne":{"fw":168,"fh":182,"cot":8,"ax":89.8,"ay":138.5,"P":128,"so":[12,10,10,6,10]},"q_nam_se":{"fw":168,"fh":148,"cot":8,"ax":89.7,"ay":134.3,"P":128,"so":[12,10,10,6,10]},"q_nhay_ne":{"fw":106,"fh":105,"cot":8,"ax":53.0,"ay":80.5,"P":128,"so":[12,10,10,6,10]},"q_nhay_se":{"fw":108,"fh":87,"cot":8,"ax":54.6,"ay":73.8,"P":128,"so":[12,10,10,6,10]},"q_rong_ne":{"fw":307,"fh":222,"cot":8,"ax":155.6,"ay":183.7,"P":128,"so":[12,10,10,6,10]},"q_rong_se":{"fw":307,"fh":269,"cot":8,"ax":155.6,"ay":202.2,"P":128,"so":[12,10,10,6,10]},"canh":{"n_twistedtree_2":[0,0,264,497,136.2,474.2,0.43,7.58],"n_deadtree_3":[266,0,244,491,137.1,463.8,0.42,7.97],"n_commontree_4":[512,0,190,462,85.5,432.0,0.5,7.55],"n_commontree_2":[704,0,290,457,151.6,419.6,0.56,7.64],"n_commontree_3":[996,0,212,452,113.5,422.3,0.45,7.54],"n_commontree_1":[1210,0,271,447,149.7,409.3,0.55,7.26],"n_commontree_5":[1483,0,219,436,127.1,398.6,0.53,7.01],"n_twistedtree_3":[1704,0,338,434,161.2,409.1,1.65,7.23],"n_pine_3":[0,499,258,433,105.6,410.4,0.73,7.39],"n_pine_2":[260,499,347,430,158.5,406.9,1.19,7.38],"n_pine_1":[609,499,298,427,128.5,403.9,1.12,7.32],"n_deadtree_1":[909,499,289,427,116.6,396.7,0.45,7.12],"n_twistedtree_1":[1200,499,412,423,84.3,394.5,1.33,7.53],"tre_2":[1614,499,136,417,57.0,405.4,0.46,6.8],"n_deadtree_2":[1752,499,293,416,146.2,389.8,1.54,7.47],"tre_1":[0,934,101,416,33.4,394.3,0.56,7.06],"tre_0":[103,934,110,399,58.2,385.8,0.46,6.47],"tre_3":[215,934,179,385,97.1,377.8,0.58,6.92],"n_rock_medium_3":[396,934,181,190,113.5,123.1,1.82,2.32],"n_rock_medium_2":[579,934,191,166,93.2,130.2,1.53,1.9],"n_rock_medium_1":[772,934,194,164,115.8,113.4,1.71,2.26],"den_long":[968,934,51,151,4.7,147.4,0.05,2.6],"n_bush_common":[1021,934,100,90,48.1,69.9,0.44,1.27],"n_bush_common_flowers":[1123,934,101,90,48.1,69.9,0.44,1.27],"n_fern_1":[1226,934,134,86,64.7,68.2,0.39,0.84],"n_rockpath_round_wide":[1362,934,160,86,76.9,45.8,1.01,0.11],"n_plant_1_big":[1524,934,72,85,31.5,83.2,0.14,1.41],"n_mushroom_laetiporus":[1598,934,85,75,54.6,46.5,0.6,0.77],"n_grass_common_tall":[1685,934,30,54,14.5,49.4,0.11,0.79],"n_grass_wispy_tall":[1717,934,46,51,24.9,46.8,0.13,0.75],"n_flower_3_group":[1765,934,34,50,14.8,46.2,0.13,0.72],"n_flower_4_group":[1801,934,32,50,14.3,46.0,0.16,0.8],"n_rockpath_round_small_1":[1835,934,83,50,41.0,27.0,0.58,0.11],"n_plant_7_big":[1920,934,95,49,44.4,34.6,0.74,0.25],"rua_ne_3":[0,1352,61,47,28.0,32.5,0.41,0.4],"rua_ne_0":[63,1352,63,46,30.6,32.2,0.4,0.4],"rua_ne_2":[128,1352,63,46,30.6,32.2,0.4,0.4],"rua_ne_1":[193,1352,66,45,33.0,32.5,0.41,0.4],"rua_se_3":[261,1352,66,43,33.0,28.5,0.41,0.4],"rua_se_0":[329,1352,63,42,30.6,28.8,0.4,0.4],"rua_se_2":[394,1352,63,42,30.6,28.8,0.4,0.4],"rua_se_1":[459,1352,61,41,28.0,28.5,0.41,0.4],"n_grass_common_short":[522,1352,25,38,10.5,34.5,0.11,0.6],"n_mushroom_common":[549,1352,41,35,18.8,29.3,0.3,0.46],"n_clover_1":[592,1352,19,29,8.6,27.5,0.06,0.46],"n_pebble_square_1":[613,1352,39,24,20.5,14.4,0.27,0.13],"n_pebble_round_2":[654,1352,26,20,12.8,11.6,0.23,0.09],"n_pebble_round_1":[682,1352,30,19,14.7,11.0,0.24,0.1]},"dat":{"px":512,"m":8}}/*ISO_HET*/;
+const $=id=>document.getElementById(id);
+const cv=$('cv'),ctx=cv.getContext('2d');
+const dark=document.createElement('canvas'),dc=dark.getContext('2d');
+let W=0,H=0,DPR=1,Z=40;
+function doiCo(){DPR=Math.min(2.5,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=dark.width=Math.round(W*DPR);cv.height=dark.height=Math.round(H*DPR);
+  cv.style.width=W+'px';cv.style.height=H+'px';Z=Math.max(26,Math.min(W/17,H/8.5));$('rot').classList.toggle('can',H>W)}
+addEventListener('resize',doiCo);doiCo();
+
+/* ---------- ảnh ---------- */
+const IM={};
+function anh(f){if(!IM[f]){const i=new Image();i.src='sprites/'+f+'.webp';IM[f]=i}return IM[f]}
+const xong=i=>i&&i.complete&&i.naturalWidth>0;
+const RAR=[{n:'Trắng',c:'#b9b9c2',q:'Sắt'},{n:'Lục',c:'#4fd06a',q:'Đồng'},{n:'Xanh',c:'#3d9bff',q:'Bạc'},{n:'Tím',c:'#b066ff',q:'Huyền'},
+  {n:'Cam',c:'#ff9a1c',q:'Hoàng Kim'},{n:'Hồng',c:'#ff5fb0',q:'Thiên Hồ'},{n:'Đỏ',c:'#ff3434',q:''}];
+const LOP={cb:{n:'Chiến Binh',k1:'Chém Xoáy',tam:1.6,nhip:.55,c:'#ffd0a0'},ct:{n:'Cung Thủ',k1:'Mưa Tên',tam:7.5,nhip:.45,c:'#c8f5ff'},ps:{n:'Pháp Sư',k1:'Thiên Lôi',tam:6.5,nhip:.62,c:'#b8a6ff'}};
+const SLOT=['Vũ khí','Mũ','Giáp','Găng','Giày','Nhẫn'];
+const VK={cb:'Kiếm',ct:'Cung',ps:'Trượng'};
+// đồ Đỏ mang tên bảo khí trong truyền thuyết Việt
+const DO_DO={0:{cb:'Gươm Thuận Thiên',ct:'Nỏ Thần Cổ Loa',ps:'Trượng Kim Quy'},1:'Mũ Phù Đổng',2:'Giáp Thánh Gióng',3:'Găng Sơn Tinh',4:'Hài Thủy Tinh',5:'Nhẫn Lạc Long'};
+const tenDo=(si,t,l)=>t===6?(si===0?DO_DO[0][l]:DO_DO[si]):(si===0?VK[l]:SLOT[si])+' '+RAR[t].q;
+
+/* ---------- trạng thái ---------- */
+const MAPW=46;
+let G={lop:'cb',cap:1,xp:0,vang:0,ha:0,eq:[0,0,0,0,0,-1]};
+try{const s=JSON.parse(localStorage.getItem('bktk_iso')||'null');if(s)G=Object.assign(G,s)}catch(e){}
+function luu(){try{localStorage.setItem('bktk_iso',JSON.stringify(G))}catch(e){}}
+const hero={x:23,y:23,hp:400,mhp:400,mp:0,dir:'se',lat:false,st:'dung',t:0,atk:-1,cd1:0,ultT:0,hurt:0,down:0,muc:null,diLai:0};
+const rua={x:21.8,y:23.8,dir:'se',lat:false,t:0,noi:'',noiT:0};
+let quai=[],dan=[],roi=[],hieu=[],chu=[],hat=[],dom=[],canh=[],den=[],nam=[];
+let rung=0,flash=0,flashC='255,210,90',dongho=0,tuDanh=true,keo=null,phim={},banner=null,trumDaRa=false,lienHoan=0,lienT=0,dotHa={},dotId=0;
+const cam={x:23,y:23};
+
+/* ---------- toán góc chéo ---------- */
+const S=(x,y,z=0)=>[((x-cam.x)+(y-cam.y))*.7071*Z+W/2,((x-cam.x)-(y-cam.y))*.3536*Z+H*.56-z*.866*Z];
+const kc=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+function huong(o,dx,dy){const sx=dx+dy,sy=dx-dy;if(Math.abs(sx)+Math.abs(sy)<1e-3)return;o.dir=sy>=0?'se':'ne';o.lat=sx<0}
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+
+/* ---------- âm thanh: tạo bằng code (sáo ngũ cung, tiếng dế, tiếng đánh) ---------- */
+let A=null,amBat=true,master=null;
+function amKhoi(){if(A)return;try{A=new (window.AudioContext||window.webkitAudioContext)();master=A.createGain();master.gain.value=.55;master.connect(A.destination);nhacNen()}catch(e){A=null}}
+function tieng(f,dai,kieu='sine',to=.2,f2=null,tre=0){if(!A||!amBat)return;const t=A.currentTime+tre,o=A.createOscillator(),g=A.createGain();o.type=kieu;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dai);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(to,t+.008);g.gain.exponentialRampToValueAtTime(.0008,t+dai);o.connect(g);g.connect(master);o.start(t);o.stop(t+dai+.02)}
+function on(dai,to=.25,loc=1200,q=.8,kieu='bandpass',tre=0){if(!A||!amBat)return;const t=A.currentTime+tre,n=Math.floor(A.sampleRate*dai),b=A.createBuffer(1,n,A.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n)**2;const s=A.createBufferSource(),f=A.createBiquadFilter(),g=A.createGain();s.buffer=b;f.type=kieu;f.frequency.value=loc;f.Q.value=q;g.gain.value=to;s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+const SFX={
+  chem(){on(.12,.22,2200,.7)},trung(){tieng(170,.12,'sine',.25,60);on(.06,.12,700)},
+  chiMang(){tieng(170,.14,'sine',.3,50);tieng(1800,.18,'triangle',.08,2600)},ten(){on(.08,.12,4200,2)},phep(){tieng(300,.25,'sine',.12,900)},
+  no(){on(.45,.35,300,.6,'lowpass');tieng(70,.5,'sine',.35,35)},vang(){tieng(1320,.08,'square',.04);tieng(1760,.12,'square',.035,null,.06)},
+  roi(t){const f=[520,600,700,820,980,1180][Math.min(5,t)];tieng(f,.25,'triangle',.08);tieng(f*1.5,.3,'sine',.05,null,.07)},
+  do(){for(let i=0;i<14;i++)tieng(2000+Math.random()*4000,.12+Math.random()*.2,'sine',.05,null,Math.random()*.15);on(.35,.3,6000,1,'highpass');
+    [523,659,784,1047,1319].forEach((f,i)=>tieng(f,.6,'triangle',.09,null,.25+i*.09))},
+  len(){[392,440,523,587,659,784].forEach((f,i)=>tieng(f,.35,'triangle',.1,null,i*.07))},
+  set(){on(.25,.25,3000,.5,'highpass');tieng(90,.4,'sawtooth',.12,40)},gam(){tieng(80,1.2,'sawtooth',.18,45);on(1,.2,250,.5,'lowpass')},
+  gom(){tieng(880,.08,'sine',.05,1760)}
+};
+// nhạc nền: nền trầm ấm + sáo trúc ngũ cung (hò xự xang xê cống) + tiếng dế đêm
+function nhacNen(){
+  const ngu=[293.66,329.63,392,440,493.88,587.33,659.25,784];
+  const nen=()=>{if(!A)return;const t=A.currentTime;[146.8,220,293.7].forEach((f,i)=>{const o=A.createOscillator(),g=A.createGain();o.type='sine';o.frequency.value=f*(1+(i-1)*.002);
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(amBat?.035:0,t+3);g.gain.linearRampToValueAtTime(0,t+9);o.connect(g);g.connect(master);o.start(t);o.stop(t+9.2)});setTimeout(nen,8000)};
+  const sao=()=>{if(!A)return;let t=A.currentTime+.2;const n=3+Math.floor(Math.random()*4);let k=Math.floor(Math.random()*5);
+    for(let i=0;i<n;i++){k=Math.max(0,Math.min(ngu.length-1,k+[-2,-1,1,2,0][Math.floor(Math.random()*5)]));const f=ngu[k],d=i===n-1?1.6:.35+Math.random()*.4;
+      const o=A.createOscillator(),v=A.createOscillator(),vg=A.createGain(),g=A.createGain();o.type='sine';o.frequency.value=f;v.frequency.value=5.2;vg.gain.value=f*.012;v.connect(vg);vg.connect(o.frequency);
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(amBat?.06:0,t+.07);g.gain.setValueAtTime(amBat?.05:0,t+d*.7);g.gain.exponentialRampToValueAtTime(.0005,t+d);o.connect(g);g.connect(master);
+      o.start(t);v.start(t);o.stop(t+d+.05);v.stop(t+d+.05);t+=d*.85}
+    setTimeout(sao,(t-A.currentTime)*1000+2500+Math.random()*4000)};
+  const de=()=>{if(!A)return;if(amBat)for(let i=0;i<3;i++)tieng(4300+Math.random()*300,.05,'sine',.012,null,i*.09);setTimeout(de,700+Math.random()*2200)};
+  nen();setTimeout(sao,1500);de()}
+
+/* ---------- bản đồ: Rừng Trúc ban đêm ---------- */
+const CANH=()=>M.canh||{};
+function datVat(ten,x,y,tl=1){const c=CANH()[ten];if(!c)return;canh.push({ten,x,y,tl,r:Math.min(1.2,c[6]*tl),cao:c[7]*tl,phang:c[7]*tl<.3,mo:1});}
+function taoMap(){
+  canh=[];den=[];nam=[];seed=11;
+  const trong=(x,y,r)=>Math.hypot(x-23,y-23)>4.5&&canh.every(c=>Math.hypot(c.x-x,c.y-y)>c.r+r+.2);
+  // viền rừng: tre và cây dày quanh mép
+  for(let i=0;i<MAPW;i+=1.5)for(const [x,y] of [[i,0],[i,MAPW],[0,i],[MAPW,i]]){
+    const ten=rnd()<.6?'tre_'+Math.floor(rnd()*4):['n_commontree_1','n_commontree_2','n_pine_1','n_pine_3','n_commontree_5'][Math.floor(rnd()*5)];
+    datVat(ten,x+(rnd()-.5)*1.4,y+(rnd()-.5)*1.4,.85+rnd()*.3)}
+  const rai=(ds,so,rr,tl0=.8,tl1=1.15)=>{for(let k=0,n=0;k<so*30&&n<so;k++){const x=3+rnd()*(MAPW-6),y=3+rnd()*(MAPW-6);if(trong(x,y,rr)){datVat(ds[Math.floor(rnd()*ds.length)],x,y,tl0+rnd()*(tl1-tl0));n++}}};
+  rai(['tre_0','tre_1','tre_2','tre_3'],12,.6);
+  rai(['n_commontree_1','n_commontree_2','n_commontree_5','n_pine_2','n_twistedtree_2','n_deadtree_1'],9,.7);
+  rai(['n_rock_medium_1','n_rock_medium_2','n_rock_medium_3'],6,.6,.22,.34);
+  rai(['n_bush_common','n_bush_common_flowers','n_fern_1','n_plant_1_big'],22,.4);
+  rai(['n_mushroom_common','n_mushroom_laetiporus'],12,.3);
+  for(const c of canh)if(c.ten.startsWith('n_mushroom')&&rnd()<.6)nam.push({x:c.x,y:c.y,p:rnd()*6});
+  // đèn lồng dọc lối đi đá
+  for(let i=0;i<5;i++){const x=10+i*6+(rnd()-.5)*2,y=14+i*3.5+(rnd()-.5)*2;if(trong(x,y,.5)){datVat('den_long',x,y);den.push({x:x+.5,y:y-.5,p:rnd()*6})}}
+  for(let i=0;i<26;i++){const x=8+i*1.15+(rnd()-.5),y=12+i*.75+(rnd()-.5);datVat(rnd()<.5?'n_rockpath_round_wide':'n_rockpath_round_small_1',x,y,.5)}
+  // trang trí sát đất (không cản)
+  for(let i=0;i<260;i++){const x=1+rnd()*(MAPW-2),y=1+rnd()*(MAPW-2);const ds=['n_grass_common_short','n_grass_wispy_tall','n_grass_common_tall','n_clover_1','n_flower_3_group','n_flower_4_group','n_pebble_round_1','n_pebble_square_1','n_plant_7_big'];
+    const ten=ds[Math.floor(rnd()*ds.length)],c=CANH()[ten];if(c)canh.push({ten,x,y,tl:.8+rnd()*.4,r:0,cao:c[7],phang:true,mo:1,co:true})}
+  // đom đóm
+  dom=[];for(let i=0;i<70;i++)dom.push({x:Math.random()*MAPW,y:Math.random()*MAPW,z:.4+Math.random()*1.8,p:Math.random()*6,v:.3+Math.random()*.5});
+}
+function canVat(o,r){ // đẩy ra khỏi gốc cây/đá và mép bản đồ
+  for(const c of canh){if(!c.r||c.phang)continue;const dx=o.x-c.x,dy=o.y-c.y,d=Math.hypot(dx,dy),m=c.r+r;if(d<m&&d>1e-4){o.x=c.x+dx/d*m;o.y=c.y+dy/d*m}}
+  o.x=Math.max(1.8,Math.min(MAPW-1.8,o.x));o.y=Math.max(1.8,Math.min(MAPW-1.8,o.y))}
+
+/* ---------- quái ---------- */
+const MQ={nhay:{n:'Nhầy',mau:70,cong:9,toc:1.7,r:.35,xp:6},nam:{n:'Nấm Độc',mau:110,cong:11,toc:1.3,r:.4,xp:8},doi:{n:'Dơi Hang',mau:60,cong:10,toc:2.7,r:.35,xp:7},
+  hon:{n:'Hồn Sương',mau:95,cong:13,toc:1.9,r:.4,xp:9},rong:{n:'Hỏa Long',mau:9000,cong:38,toc:1.6,r:1.3,xp:400,trum:1}};
+function sinhBay(){
+  const loai=['nhay','nam','doi','hon'];let x,y,k=0;
+  do{const g=Math.random()*6.28,d=9+Math.random()*9;x=hero.x+Math.cos(g)*d;y=hero.y+Math.sin(g)*d;k++}while((x<4||y<4||x>MAPW-4||y>MAPW-4)&&k<40);
+  x=Math.max(4,Math.min(MAPW-4,x));y=Math.max(4,Math.min(MAPW-4,y));
+  const so=5+Math.floor(Math.random()*5),a=loai[Math.floor(Math.random()*4)],b=loai[Math.floor(Math.random()*4)];
+  for(let i=0;i<so;i++)taoQuai(i%3===2?b:a,x+(Math.random()-.5)*3,y+(Math.random()-.5)*3)}
+function taoQuai(ty,x,y,trum=0){const q=MQ[ty],tl=1+(G.cap-1)*.12;quai.push({ty,x,y,mau:q.mau*tl*(trum?1:1),max:q.mau*tl,cong:q.cong*tl,toc:q.toc,r:q.r*(trum?1.6:1),trum:trum||q.trum,
+  dir:'se',lat:false,t:Math.random()*5,hd:-1,cdD:1+Math.random(),trung:0,chet:0,day:{x:0,y:0},thay:false,ra:trum?1.2:0})}
+function goiTrum(){trumDaRa=true;let x=hero.x+6,y=hero.y-6;x=Math.max(5,Math.min(MAPW-5,x));y=Math.max(5,Math.min(MAPW-5,y));taoQuai('rong',x,y,1);
+  banner={t:'HỎA LONG XUẤT HIỆN',c:'#ff6b3a',d:2.6,T:0};SFX.gam();rung=10;noi('Cẩn thận! Hỏa Long canh giữ mảnh bảo khí ở đây!')}
+
+/* ---------- nhân vật: tấm ảnh nhiều lớp, nhuộm màu theo bậc đồ ---------- */
+const NV_SO={dung:[0,12],chay:[12,12],danh:[24,12],trung:[36,8],nga:[44,12]};
+const NHUOM={};
+function tamNV(l,h){const k=l+'_'+h,m=M[k];if(!m)return null;const t=anh(k+'_than'),mk=[0,1,2,3].map(i=>anh(k+'_m'+i)),vk=[0,1,2,3].map(i=>anh(k+'_vk'+i));
+  if(![t,...mk,...vk].every(xong))return null;return {m,t,mk,vk,k}}
+function nhuom(s,cols){const k=s.k+cols.join();if(NHUOM[k])return NHUOM[k];
+  const c=document.createElement('canvas');c.width=s.t.naturalWidth;c.height=s.t.naturalHeight;const x=c.getContext('2d');x.drawImage(s.t,0,0);
+  const t=document.createElement('canvas');t.width=c.width;t.height=c.height;const tx=t.getContext('2d');
+  cols.forEach((col,i)=>{if(!col)return;tx.globalCompositeOperation='copy';tx.drawImage(s.mk[i],0,0);tx.globalCompositeOperation='source-in';tx.fillStyle=col;tx.fillRect(0,0,t.width,t.height);
+    x.globalCompositeOperation='color';x.globalAlpha=.45;x.drawImage(t,0,0);x.globalCompositeOperation='soft-light';x.globalAlpha=.3;x.drawImage(t,0,0);x.globalAlpha=1});
+  x.globalCompositeOperation='source-over';return NHUOM[k]=c}
+const mauDo=si=>G.eq[si]>0?RAR[G.eq[si]].c:null;
+function veNV(){
+  const s=tamNV(G.lop,hero.dir);if(!s)return;const m=s.m;let a='dung',f=0;
+  if(hero.down>0){a='nga';f=Math.min(11,Math.floor((1-hero.down/1.4)*14))}
+  else if(hero.hurt>0){a='trung';f=Math.min(4,Math.floor((1-hero.hurt/.2)*5))}
+  else if(hero.atk>=0){a='danh';f=Math.min(11,Math.floor(hero.atk/LOP[G.lop].nhip*12))}
+  else if(hero.st==='chay'){a='chay';f=Math.floor(hero.t*14)%12}
+  else f=Math.floor(hero.t*8)%12;
+  const j=NV_SO[a][0]+f,sx=(j%m.cot)*m.fw,sy=Math.floor(j/m.cot)*m.fh,k=Z/m.P,[X,Y]=S(hero.x,hero.y);
+  const body=nhuom(s,[mauDo(1),mauDo(2),mauDo(3),mauDo(4)]),vt=G.eq[0]>=6?3:G.eq[0]>=4?2:G.eq[0]>=2?1:0;
+  ctx.save();ctx.translate(X,Y);if(hero.lat)ctx.scale(-1,1);if(hero.hurt>0)ctx.filter='brightness(1.8)';
+  ctx.drawImage(body,sx,sy,m.fw,m.fh,-m.ax*k,-m.ay*k,m.fw*k,m.fh*k);
+  if(G.eq[0]>=4){ctx.shadowColor=RAR[G.eq[0]].c;ctx.shadowBlur=14}
+  ctx.drawImage(s.vk[vt],sx,sy,m.fw,m.fh,-m.ax*k,-m.ay*k,m.fw*k,m.fh*k);ctx.restore()}
+function veQuai(q){
+  const m=M['q_'+q.ty+'_'+q.dir],im=anh('q_'+q.ty+'_'+q.dir);if(!m||!xong(im))return;
+  const b=[0];for(const n of m.so)b.push(b[b.length-1]+n);let st,f;
+  if(q.chet>0){st=4;f=Math.min(m.so[4]-1,Math.floor(q.chet/.55*m.so[4]))}
+  else if(q.trung>0){st=3;f=Math.min(m.so[3]-1,Math.floor((1-q.trung/.18)*m.so[3]))}
+  else if(q.hd>=0){st=2;f=Math.min(m.so[2]-1,Math.floor(q.hd/.5*m.so[2]))}
+  else if(q.thay){st=1;f=Math.floor(q.t*12)%m.so[1]}
+  else{st=0;f=Math.floor(q.t*8)%m.so[0]}
+  const j=b[st]+f,sx=(j%m.cot)*m.fw,sy=Math.floor(j/m.cot)*m.fh,k=Z/m.P*(q.trum?1.9:1.4),[X,Y]=S(q.x,q.y);
+  ctx.save();ctx.translate(X,Y);if(q.lat)ctx.scale(-1,1);if(q.chet>.35)ctx.globalAlpha=Math.max(0,1-(q.chet-.35)/.4);if(q.trung>0)ctx.filter='brightness(2)';
+  ctx.drawImage(im,sx,sy,m.fw,m.fh,-m.ax*k,-m.ay*k,m.fw*k,m.fh*k);ctx.restore()}
+function veCanh(c,mo){const v=CANH()[c.ten],im=anh('canh');if(!v||!xong(im))return;const [x,y,w,h,ax,ay]=v,k=Z/64*c.tl,[X,Y]=S(c.x,c.y);
+  if(mo<1){ctx.globalAlpha=mo}ctx.drawImage(im,x,y,w,h,X-ax*k,Y-ay*k,w*k,h*k);ctx.globalAlpha=1}
+function veRua(){const ten='rua_'+rua.dir+'_'+(Math.floor(rua.t*6)%4),v=CANH()[ten],im=anh('canh');if(!v||!xong(im))return;
+  const [x,y,w,h,ax,ay]=v,k=Z/64*1.25,[X,Y]=S(rua.x,rua.y,.12+Math.sin(rua.t*3)*.05);ctx.save();ctx.translate(X,Y);if(rua.lat)ctx.scale(-1,1);
+  ctx.shadowColor='#ffd46b';ctx.shadowBlur=10;ctx.drawImage(im,x,y,w,h,-ax*k,-ay*k,w*k,h*k);ctx.restore()}
+
+/* ---------- đồ rơi ---------- */
+function rollBac(trum){const w=trum?[0,0,0,30,40,20,10]:[400,250,160,100,50,30,6],t=w.reduce((a,b)=>a+b);let r=Math.random()*t;for(let i=0;i<7;i++){r-=w[i];if(r<0)return i}return 0}
+function roiDo(x,y,trum){
+  const so=trum?7:(Math.random()<.42?1:0);
+  for(let i=0;i<so;i++){const t=trum&&i===0?6:rollBac(trum),si=Math.floor(Math.random()*6),g=Math.random()*6.28,d=.6+Math.random()*(trum?2.6:1.3);
+    roi.push({k:'do',t,si,ten:tenDo(si,t,G.lop),x,y,tx:x+Math.cos(g)*d,ty:y+Math.sin(g)*d,bay:0,z:0,cho:0,hut:0})}
+  const xu=trum?14:2+Math.floor(Math.random()*3);
+  for(let i=0;i<xu;i++){const g=Math.random()*6.28,d=.3+Math.random()*(trum?2.2:1);roi.push({k:'xu',x,y,tx:x+Math.cos(g)*d,ty:y+Math.sin(g)*d,bay:0,z:0,cho:0,hut:0})}}
+function nhatDo(o){
+  if(o.k==='xu'){G.vang+=3+G.cap;SFX.vang();return}
+  SFX.roi(o.t);const cu=G.eq[o.si];
+  if(o.t>cu){G.eq[o.si]=o.t;chuNoi(hero.x,hero.y,2.4,'Mặc '+o.ten,RAR[o.t].c,15);veDo()}
+  if(o.t===6){SFX.do();flash=.6;flashC='255,60,40';rung=8;banner={t:'ĐỒ ĐỎ! '+o.ten,c:'#ff4a3a',d:2.8,T:0};noi('Bảo khí đỏ! Đúng là phúc lớn của đất trời!')}
+  else if(o.t>=4){flash=.2;flashC='255,180,60'}
+  luu()}
+
+/* ---------- chữ, hiệu ứng ---------- */
+function chuNoi(x,y,z,t,c='#fff',co=16,kieu='',dai=1){chu.push({x,y,z,t,c,co,kieu,T:0,dai,dx:(Math.random()-.5)*.6})}
+function noi(t){rua.noi=t;rua.noiT=4}
+function bung(x,y,z,so,c,toc=4,song=.6,co=2.5){for(let i=0;i<so;i++){const g=Math.random()*6.28,v=toc*(.4+Math.random());hat.push({x,y,z,vx:Math.cos(g)*v,vy:Math.sin(g)*v,vz:2+Math.random()*4,c,t:0,song:song*(.6+Math.random()*.8),co})}}
+function veDo(){$('do').innerHTML=G.eq.map((t,i)=>`<i title="${SLOT[i]}" style="background:${t>=0?RAR[t].c:'#222'};${t>=4?'box-shadow:0 0 8px '+RAR[t].c:''}"></i>`).join('')}
+
+/* ---------- đánh ---------- */
+function sat(q,dm,chiMang,dot){
+  if(q.chet>0)return;q.mau-=dm;q.trung=.18;q.thay=true;const dx=q.x-hero.x,dy=q.y-hero.y,d=Math.hypot(dx,dy)||1,day=q.trum?.05:.35;q.day.x+=dx/d*day*6;q.day.y+=dy/d*day*6;
+  chuNoi(q.x,q.y,1.4+(q.trum?2:0),(chiMang?'':'')+Math.round(dm),chiMang?'#ffd23a':'#fff',chiMang?24:16,chiMang?'cm':'');
+  hero.mp=Math.min(100,hero.mp+(q.trum?2:1.2));
+  if(q.mau<=0){q.chet=.001;G.ha++;G.xp+=MQ[q.ty].xp;roiDo(q.x,q.y,q.trum);bung(q.x,q.y,.6,q.trum?60:14,'#e9d6ff',q.trum?7:4,.7);
+    if(dot!=null){const d=dotHa[dot]||(dotHa[dot]={n:0});d.n++;d.cuoi=dongho}lienHoan++;lienT=2.8;
+    if(q.trum){banner={t:'HẠ HỎA LONG! QUA MÀN',c:'#ffd46b',d:3.2,T:0};flash=.7;flashC='255,210,90';rung=14;SFX.no();noi('Giỏi lắm! Mảnh Gươm Thuận Thiên đã về tay ngươi.');setTimeout(()=>{trumDaRa=false},20000)}
+    lenCap()}}
+function lenCap(){const can=40+G.cap*30;while(G.xp>=can+0){G.xp-=40+G.cap*30;G.cap++;SFX.len();banner={t:'LÊN CẤP '+G.cap+'!',c:'#9fe8ff',d:1.8,T:0};hero.mhp=400+G.cap*60;hero.hp=hero.mhp;
+  hieu.push({k:'cot',x:hero.x,y:hero.y,c:'#9fe8ff',T:0,dai:1});if(G.cap%3===0)noi('Ngươi mạnh lên rõ rệt rồi đấy!');luu();break}}
+function chiMang(){return Math.random()<.18}
+function congNV(){return 22+G.cap*5+G.eq.reduce((a,t)=>a+(t>0?t*t*2.2:0),0)}
+function danhThuong(q){
+  const l=G.lop,dot=++dotId;hero.atk=0;huong(hero,q.x-hero.x,q.y-hero.y);
+  setTimeout(()=>{if(!q)return;const cm=chiMang(),dm=congNV()*(cm?2.2:1);
+    if(l==='cb'){SFX.chem();const g0=Math.atan2(q.y-hero.y,q.x-hero.x);hieu.push({k:'chem',x:hero.x,y:hero.y,g:g0,T:0,dai:.22,c:LOP.cb.c});let trung=0;
+      for(const o of quai)if(!o.chet&&kc(o,hero)<2.1+o.r){const g=Math.atan2(o.y-hero.y,o.x-hero.x);let dg=Math.abs(g-g0);if(dg>Math.PI)dg=6.28-dg;if(dg<1.25){sat(o,dm,cm,dot);trung++}}
+      if(trung){SFX.trung();cm&&SFX.chiMang()}}
+    else if(l==='ct'){SFX.ten();dan.push({k:'ten',x:hero.x,y:hero.y,z:1,tx:q,toc:20,dm,cm,xuyen:2,dot,c:'#e8f6ff'})}
+    else{SFX.phep();dan.push({k:'cau',x:hero.x,y:hero.y,z:1.3,tx:q,toc:11,dm,cm,dot,c:'#b8a6ff'})}
+  },LOP[l].nhip*400)}
+function kyNang(){
+  if(hero.cd1>0)return;const l=G.lop,gan=quai.filter(o=>!o.chet&&kc(o,hero)<(l==='cb'?3.2:8));if(!gan.length)return;hero.cd1=l==='cb'?4:5;hero.atk=0;const dot=++dotId;
+  if(l==='cb'){SFX.no();hieu.push({k:'xoay',x:hero.x,y:hero.y,T:0,dai:.45,c:'#ffd9a0'});rung=Math.max(rung,5);chuNoi(hero.x,hero.y,2.6,'CHÉM XOÁY!','#ffd9a0',22,'ten');
+    for(const o of quai)if(!o.chet&&kc(o,hero)<3.2+o.r)sat(o,congNV()*2.2*(chiMang()?2:1),false,dot)}
+  else if(l==='ct'){const t=gan[0];chuNoi(hero.x,hero.y,2.6,'MƯA TÊN!','#c8f5ff',22,'ten');for(let i=0;i<3;i++)setTimeout(()=>{SFX.ten();
+      for(let k=0;k<6;k++){const g=Math.random()*6.28,d=Math.random()*2.6;hieu.push({k:'mua',x:t.x+Math.cos(g)*d,y:t.y+Math.sin(g)*d,T:0,dai:.3})}
+      for(const o of quai)if(!o.chet&&kc(o,t)<3)sat(o,congNV()*1.1,chiMang(),dot)},i*200)}
+  else{chuNoi(hero.x,hero.y,2.6,'THIÊN LÔI!','#d4c8ff',22,'ten');gan.sort((a,b)=>kc(a,hero)-kc(b,hero)).slice(0,6).forEach((o,i)=>setTimeout(()=>{
+      on(.25,.3,3500,1,'highpass');hieu.push({k:'set',x:o.x,y:o.y,T:0,dai:.28});flash=Math.max(flash,.15);flashC='200,190,255';sat(o,congNV()*2.6,chiMang(),dot)},i*70))}}
+function tuyetKy(){
+  if(hero.mp<100)return;const gan=quai.filter(o=>!o.chet&&kc(o,hero)<9);if(!gan.length)return;
+  // ngắm chỗ đông quái nhất
+  let t=gan[0],best=0;for(const a of gan){const n=gan.filter(b=>kc(a,b)<4).length+(a.trum?5:0);if(n>best){best=n;t=a}}
+  hero.mp=0;const dot=++dotId;banner={t:'GƯƠM THUẬN THIÊN!',c:'#ffd46b',d:1.8,T:0};SFX.set();
+  hieu.push({k:'guom',x:t.x,y:t.y,T:0,dai:1.1});noi('Bảo khí thức tỉnh!');
+  setTimeout(()=>{SFX.no();rung=16;flash=.6;flashC='255,215,110';hieu.push({k:'song',x:t.x,y:t.y,T:0,dai:.7,r:5});bung(t.x,t.y,.2,70,'#ffd46b',9,.9,3);
+    for(const o of quai)if(!o.chet&&kc(o,t)<5+o.r)sat(o,congNV()*9*(chiMang()?1.8:1),true,dot)},520)}
+
+/* ---------- vòng lặp ---------- */
+function buoc(dt){
+  dongho+=dt;hero.t+=dt;rua.t+=dt;hero.cd1=Math.max(0,hero.cd1-dt);hero.hurt=Math.max(0,hero.hurt-dt);
+  if(hero.atk>=0){hero.atk+=dt;if(hero.atk>LOP[G.lop].nhip)hero.atk=-1}
+  if(hero.down>0){hero.down-=dt;if(hero.down<=0){hero.hp=hero.mhp;hero.x=23;hero.y=23;quai=quai.filter(q=>q.trum);noi('Đừng nản. Mảnh bảo khí vẫn còn trên người ngươi, không mất gì đâu.')}}
+  // di chuyển: tay kéo / phím trước, không thì tự đánh
+  let mx=0,my=0;
+  if(keo&&keo.dx*keo.dx+keo.dy*keo.dy>100){const a=keo.dx/(.7071*Z),b=keo.dy/(.3536*Z);mx=(a+b)/2;my=(a-b)/2}
+  if(phim.w||phim.ArrowUp){mx-=.7;my+=.7}if(phim.s||phim.ArrowDown){mx+=.7;my-=.7}if(phim.a||phim.ArrowLeft){mx-=.7;my-=.7}if(phim.d||phim.ArrowRight){mx+=.7;my+=.7}
+  const tay=Math.hypot(mx,my)>.01;if(tay)hero.diLai=1.5;else hero.diLai=Math.max(0,hero.diLai-dt);
+  const song=quai.filter(q=>!q.chet);
+  let muc=null,dmuc=1e9;for(const q of song){const d=kc(q,hero)-(q.trum?1.5:0);if(d<dmuc){dmuc=d;muc=q}}
+  hero.st='dung';
+  if(hero.down>0){}
+  else if(tay){const d=Math.hypot(mx,my);hero.x+=mx/d*4.2*dt;hero.y+=my/d*4.2*dt;huong(hero,mx,my);hero.st='chay'}
+  else if(tuDanh&&hero.diLai<=0&&muc){
+    const tam=LOP[G.lop].tam+muc.r;
+    if(dmuc>tam-.2){const dx=muc.x-hero.x,dy=muc.y-hero.y,d=Math.hypot(dx,dy);hero.x+=dx/d*4*dt;hero.y+=dy/d*4*dt;huong(hero,dx,dy);hero.st='chay'}
+    else if(hero.atk<0){danhThuong(muc)}
+    if(hero.cd1<=0&&dmuc<(G.lop==='cb'?3:8))kyNang();
+    if(hero.mp>=100&&(song.filter(q=>kc(q,hero)<7).length>=5||muc.trum))tuyetKy()}
+  canVat(hero,.35);
+  // máy quay đuổi theo mượt
+  cam.x+=(hero.x-cam.x)*Math.min(1,dt*5);cam.y+=(hero.y-cam.y)*Math.min(1,dt*5);
+  // Rùa Vàng đi theo phía sau
+  const rx=hero.x-1.05,ry=hero.y-1.05,rd=Math.hypot(rx-rua.x,ry-rua.y);if(rd>.15){const v=Math.min(rd,5*dt*(rd>3?2:1));rua.x+=(rx-rua.x)/rd*v;rua.y+=(ry-rua.y)/rd*v;huong(rua,rx-rua.x,ry-rua.y)}
+  rua.noiT=Math.max(0,rua.noiT-dt);
+  // quái
+  for(const q of quai){q.t+=dt;q.trung=Math.max(0,q.trung-dt);
+    if(q.chet>0){q.chet+=dt;continue}
+    if(q.ra>0){q.ra-=dt;continue}
+    q.x+=q.day.x*dt;q.y+=q.day.y*dt;q.day.x*=Math.pow(.02,dt);q.day.y*=Math.pow(.02,dt);
+    const d=kc(q,hero);if(d<9||q.trum)q.thay=true;
+    if(q.hd>=0){q.hd+=dt;if(q.hd>.25&&!q.daDanh){q.daDanh=true;if(d<q.r+1.3&&hero.down<=0){const dm=q.cong*(.85+Math.random()*.3);hero.hp-=dm;hero.hurt=.2;chuNoi(hero.x,hero.y,1.9,'-'+Math.round(dm),'#ff6b5b',15);SFX.trung();
+        if(hero.hp<=0){hero.down=1.4;hero.hp=0;banner={t:'BỊ HẠ',c:'#ff6b6b',d:1.4,T:0}}}}if(q.hd>.5)q.hd=-1}
+    else if(q.thay&&hero.down<=0){const dx=hero.x-q.x,dy=hero.y-q.y;huong(q,dx,dy);
+      if(d>q.r+.9){q.x+=dx/d*q.toc*dt;q.y+=dy/d*q.toc*dt}else{q.cdD-=dt;if(q.cdD<=0){q.cdD=q.trum?1.6:1.3;q.hd=0;q.daDanh=false}}}
+    for(const o of quai)if(o!==q&&!o.chet){const dx=q.x-o.x,dy=q.y-o.y,dd=Math.hypot(dx,dy),m=q.r+o.r;if(dd<m&&dd>1e-4){q.x+=dx/dd*(m-dd)*.5;q.y+=dy/dd*(m-dd)*.5}}
+    canVat(q,q.r)}
+  quai=quai.filter(q=>q.chet<1);
+  // bầy mới, trùm
+  if(song.length<14&&Math.random()<dt*.9)sinhBay();
+  if(!trumDaRa&&G.ha>0&&G.ha%60>=55&&!quai.some(q=>q.trum))goiTrum();
+  // đạn
+  for(const b of dan){const t=b.tx;if(!t||t.chet){b.xong=true;continue}const dx=t.x-b.x,dy=t.y-b.y,d=Math.hypot(dx,dy);
+    if(d<.4){b.xong=true;if(b.k==='cau'){on(.2,.18,900);hieu.push({k:'no',x:t.x,y:t.y,T:0,dai:.3,c:'#b8a6ff'});bung(t.x,t.y,1,10,'#c9b8ff',3,.4);
+        for(const o of quai)if(!o.chet&&kc(o,t)<1.5+o.r)sat(o,b.dm*(o===t?1:.6),b.cm,b.dot)}else{sat(t,b.dm,b.cm,b.dot);bung(t.x,t.y,1,5,'#e8f6ff',2,.25)}
+      continue}b.x+=dx/d*b.toc*dt;b.y+=dy/d*b.toc*dt}
+  dan=dan.filter(b=>!b.xong);
+  // đồ rơi: bay vòng cung ra đất, chờ, rồi bay vào người
+  for(const o of roi){if(o.bay<1){o.bay=Math.min(1,o.bay+dt*1.8);o.z=Math.sin(o.bay*Math.PI)*1.4;if(o.bay>=1)o.z=0;o.cx=o.x+(o.tx-o.x)*o.bay;o.cy=o.y+(o.ty-o.y)*o.bay;continue}
+    o.cho+=dt;if(o.cho>(o.k==='do'?1.3:.5)&&kc({x:o.cx,y:o.cy},hero)<7){o.hut+=dt*2.4;o.cx+=(hero.x-o.cx)*Math.min(1,o.hut*.6);o.cy+=(hero.y-o.cy)*Math.min(1,o.hut*.6);
+      if(kc({x:o.cx,y:o.cy},hero)<.4){o.xong=true;nhatDo(o)}}}
+  roi=roi.filter(o=>!o.xong);
+  // hạ nhiều con một lúc
+  for(const k in dotHa){const d=dotHa[k];if(dongho-d.cuoi<.3)continue;const n=d.n;delete dotHa[k];if(n>=3&&!(banner&&!banner.nho&&banner.T<1)){banner={t:'HẠ '+n+' CON!',c:n>=8?'#ff7ad9':'#ffd46b',d:1.3,T:0,nho:true};if(n>=8)noi('Tuyệt kỹ! Một chiêu sạch cả bầy!')}}
+  lienT-=dt;if(lienT<=0)lienHoan=0;
+  for(const h of hieu)h.T+=dt;hieu=hieu.filter(h=>h.T<h.dai);
+  for(const c of chu)c.T+=dt;chu=chu.filter(c=>c.T<c.dai);
+  for(const p of hat){p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.z+=p.vz*dt;p.vz-=9*dt;if(p.z<0){p.z=0;p.vz*=-.3;p.vx*=.6;p.vy*=.6}}hat=hat.filter(p=>p.t<p.song);
+  for(const f of dom){f.p+=dt;f.x+=Math.cos(f.p*.7+f.v*9)*dt*f.v;f.y+=Math.sin(f.p*.6)*dt*f.v;if(kc(f,hero)>14){f.x=hero.x+(Math.random()-.5)*24;f.y=hero.y+(Math.random()-.5)*24}}
+  if(banner){banner.T+=dt;if(banner.T>banner.d)banner=null}
+  rung=Math.max(0,rung-dt*30);flash=Math.max(0,flash-dt*1.6);
+  hero.hp=Math.min(hero.mhp,hero.hp+dt*(4+G.cap));
+}
+
+/* ---------- vẽ ---------- */
+let mauDat=null;
+function ve(){
+  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle='#070a12';ctx.fillRect(0,0,W,H);
+  if(rung>0)ctx.translate((Math.random()-.5)*rung,(Math.random()-.5)*rung);
+  // nền cỏ lặp, xoay về góc chéo
+  const dat=anh('dat');if(xong(dat)){if(!mauDat)mauDat=ctx.createPattern(dat,'repeat');const k=(M.dat?M.dat.m/M.dat.px:8/512)*Z;
+    mauDat.setTransform(new DOMMatrix([.7071*k,.3536*k,.7071*k,-.3536*k,W/2-.7071*Z*(cam.x+cam.y),H*.56-.3536*Z*(cam.x-cam.y)]));ctx.fillStyle=mauDat;ctx.fillRect(-20,-20,W+40,H+40)}
+  // vùng ngoài bản đồ tối dần
+  const vis=c=>{const [X,Y]=S(c.x,c.y);return X>-260&&X<W+260&&Y>-60&&Y<H+520};
+  for(const c of canh)if(c.phang&&vis(c))veCanh(c,1);
+  // vòng hiệu ứng sát đất
+  for(const h of hieu)if(h.k==='xoay'||h.k==='song'||h.k==='no'){const [X,Y]=S(h.x,h.y),p=h.T/h.dai,r=(h.k==='xoay'?3.2:h.k==='no'?1.5:h.r)*Z*(.3+p*.8);
+    ctx.save();ctx.translate(X,Y);ctx.scale(1,.5);ctx.globalAlpha=1-p;ctx.lineWidth=(h.k==='song'?10:6)*(1-p)+1;ctx.strokeStyle=h.c||'#ffd46b';ctx.shadowColor=h.c||'#ffd46b';ctx.shadowBlur=18;
+    ctx.beginPath();ctx.arc(0,0,r*.7071*1.41,0,7);ctx.stroke();ctx.restore()}
+  // bóng dưới chân
+  const bong=(x,y,r)=>{const [X,Y]=S(x,y);ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.ellipse(X,Y,r*Z*.9,r*Z*.45,0,0,7);ctx.fill()};
+  bong(hero.x,hero.y,.42);for(const q of quai)if(!q.chet&&q.ra<=0)bong(q.x,q.y,q.r*(q.trum?1.3:1));bong(rua.x,rua.y,.32);
+  // sắp xếp theo độ sâu (x-y): xa vẽ trước
+  const ds=[];for(const c of canh)if(!c.phang&&vis(c))ds.push({d:c.x-c.y,c});
+  for(const q of quai)if(q.ra<=0)ds.push({d:q.x-q.y,q});ds.push({d:hero.x-hero.y,h:1});ds.push({d:rua.x-rua.y,r:1});
+  for(const o of roi)ds.push({d:(o.cx??o.x)-(o.cy??o.y),o});
+  ds.sort((a,b)=>a.d-b.d);
+  const [HX,HY]=S(hero.x,hero.y),hd=hero.x-hero.y;
+  for(const e of ds){
+    if(e.c){let mo=1;const v=CANH()[e.c.ten];if(v&&e.d>hd&&e.c.cao>2){const [X,Y]=S(e.c.x,e.c.y),k=Z/64*e.c.tl;if(Math.abs(HX-X)<v[2]*k*.42&&HY<Y&&HY>Y-v[3]*k*.95)mo=.3}veCanh(e.c,mo)}
+    else if(e.q)veQuai(e.q);else if(e.h)veNV();else if(e.r)veRua();
+    else if(e.o){const o=e.o,[X,Y]=S(o.cx??o.x,o.cy??o.y,o.z);if(o.k==='xu'){ctx.fillStyle='#ffd23a';ctx.strokeStyle='#7a4a00';ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(X,Y-3,5,4,0,0,7);ctx.fill();ctx.stroke()}
+      else{const c=RAR[o.t].c;ctx.save();ctx.translate(X,Y-6);ctx.rotate(Math.PI/4+Math.sin(dongho*2+X)*.1);ctx.fillStyle=c;ctx.strokeStyle='#120a04';ctx.lineWidth=2;ctx.shadowColor=c;ctx.shadowBlur=12;ctx.fillRect(-6,-6,12,12);ctx.strokeRect(-6,-6,12,12);ctx.restore()}}}
+  // đạn
+  for(const b of dan){const [X,Y]=S(b.x,b.y,b.z);if(b.k==='ten'){const [X2,Y2]=S(b.tx.x,b.tx.y,1),g=Math.atan2(Y2-Y,X2-X);ctx.save();ctx.translate(X,Y);ctx.rotate(g);ctx.strokeStyle='#f4ecd8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-14,0);ctx.lineTo(6,0);ctx.stroke();ctx.restore()}
+    else{ctx.save();ctx.fillStyle='#e6dcff';ctx.shadowColor='#9f8cff';ctx.shadowBlur=18;ctx.beginPath();ctx.arc(X,Y,6,0,7);ctx.fill();ctx.restore()}}
+  // hạt
+  for(const p of hat){const [X,Y]=S(p.x,p.y,p.z);ctx.globalAlpha=1-p.t/p.song;ctx.fillStyle=p.c;ctx.fillRect(X-p.co/2,Y-p.co/2,p.co,p.co)}ctx.globalAlpha=1;
+  // ---- bóng đêm: phủ tối rồi khoét các vùng sáng ----
+  dc.setTransform(1,0,0,1,0,0);dc.globalCompositeOperation='source-over';dc.fillStyle='rgba(4,7,20,.70)';dc.fillRect(0,0,dark.width,dark.height);
+  dc.setTransform(DPR,0,0,DPR,0,0);dc.globalCompositeOperation='destination-out';
+  const sang=(x,y,r,a=1,z=0)=>{const [X,Y]=S(x,y,z),R=r*Z;dc.save();dc.translate(X,Y);dc.scale(1,.62);const g=dc.createRadialGradient(0,0,0,0,0,R);g.addColorStop(0,`rgba(0,0,0,${a})`);g.addColorStop(.55,`rgba(0,0,0,${a*.6})`);g.addColorStop(1,'rgba(0,0,0,0)');dc.fillStyle=g;dc.beginPath();dc.arc(0,0,R,0,7);dc.fill();dc.restore()};
+  sang(hero.x,hero.y,7.5,1);sang(rua.x,rua.y,2,.6);
+  for(const l of den)sang(l.x,l.y,4.2*(1+.06*Math.sin(dongho*9+l.p)),.95);
+  for(const n of nam)sang(n.x,n.y,1.6,.6);
+  for(const o of roi)if(o.k==='do'&&o.t>=1)sang(o.cx??o.x,o.cy??o.y,.8+o.t*.35,.8);
+  for(const b of dan)sang(b.x,b.y,1.5,.7);
+  for(const h of hieu)if(h.k==='song'||h.k==='guom'||h.k==='set'||h.k==='xoay')sang(h.x,h.y,h.k==='song'?9:5,1-h.T/h.dai);
+  ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(dark,0,0);ctx.setTransform(DPR,0,0,DPR,0,0);
+  // ---- những thứ phát sáng vẽ đè lên bóng đêm ----
+  ctx.globalCompositeOperation='lighter';
+  for(const l of den){const [X,Y]=S(l.x,l.y,2.1),r=Z*(1.1+.08*Math.sin(dongho*11+l.p));const g=ctx.createRadialGradient(X,Y,0,X,Y,r);g.addColorStop(0,'rgba(255,140,60,.55)');g.addColorStop(1,'rgba(255,60,20,0)');ctx.fillStyle=g;ctx.fillRect(X-r,Y-r,2*r,2*r)}
+  for(const n of nam){const [X,Y]=S(n.x,n.y,.3),r=Z*.6*(1+.2*Math.sin(dongho*2+n.p));const g=ctx.createRadialGradient(X,Y,0,X,Y,r);g.addColorStop(0,'rgba(80,220,255,.35)');g.addColorStop(1,'rgba(0,120,255,0)');ctx.fillStyle=g;ctx.fillRect(X-r,Y-r,2*r,2*r)}
+  for(const f of dom){const [X,Y]=S(f.x,f.y,f.z),a=.5+.5*Math.sin(f.p*3);if(a<.2)continue;const r=7*a;const g=ctx.createRadialGradient(X,Y,0,X,Y,r);g.addColorStop(0,`rgba(230,255,150,${.9*a})`);g.addColorStop(1,'rgba(160,255,80,0)');ctx.fillStyle=g;ctx.fillRect(X-r,Y-r,2*r,2*r)}
+  // cột sáng đồ rơi: bậc càng cao càng cao
+  for(const o of roi)if(o.k==='do'&&o.bay>=1){const [X,Y]=S(o.cx,o.cy),c=RAR[o.t].c,h=[0,40,70,110,170,230,340][o.t]*(Z/40);if(!h)continue;
+    const g=ctx.createLinearGradient(0,Y,0,Y-h);g.addColorStop(0,c);g.addColorStop(1,'rgba(0,0,0,0)');ctx.globalAlpha=.55+.2*Math.sin(dongho*4);ctx.fillStyle=g;ctx.fillRect(X-(o.t>=5?7:4),Y-h,o.t>=5?14:8,h);
+    if(o.t===6){ctx.save();ctx.translate(X,Y-10);ctx.rotate(dongho);for(let i=0;i<8;i++){ctx.rotate(Math.PI/4);ctx.fillStyle='rgba(255,70,50,.25)';ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-5,-60);ctx.lineTo(5,-60);ctx.fill()}ctx.restore()}ctx.globalAlpha=1}
+  // hiệu ứng chiêu
+  for(const h of hieu){const p=h.T/h.dai;
+    if(h.k==='chem'){const [X,Y]=S(h.x,h.y,.9);ctx.save();ctx.translate(X,Y);ctx.scale(1,.6);ctx.rotate(h.g-Math.PI/4);ctx.strokeStyle=`rgba(255,230,190,${1-p})`;ctx.lineWidth=10*(1-p)+2;ctx.shadowColor='#ffcf8a';ctx.shadowBlur=16;ctx.beginPath();ctx.arc(0,0,2*Z,-1.1+p*.4,1.1+p*.4);ctx.stroke();ctx.restore()}
+    if(h.k==='set'){const [X,Y]=S(h.x,h.y);ctx.strokeStyle=`rgba(220,210,255,${1-p})`;ctx.lineWidth=3;ctx.shadowColor='#b9a8ff';ctx.shadowBlur=20;ctx.beginPath();let x=X,y=Y-H;ctx.moveTo(x,y);while(y<Y){y+=18+Math.random()*20;x+=(Math.random()-.5)*28;ctx.lineTo(x,Math.min(y,Y))}ctx.stroke();ctx.shadowBlur=0}
+    if(h.k==='mua'){const [X,Y]=S(h.x,h.y,(1-p)*6);ctx.strokeStyle=`rgba(230,245,255,${1-p*.5})`;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X-6,Y-22);ctx.lineTo(X,Y);ctx.stroke()}
+    if(h.k==='cot'){const [X,Y]=S(h.x,h.y);const g=ctx.createLinearGradient(0,Y,0,Y-260);g.addColorStop(0,`rgba(160,230,255,${.8*(1-p)})`);g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.fillRect(X-26,Y-260,52,260)}
+    if(h.k==='guom'){const [X,Y]=S(h.x,h.y),roi_=Math.min(1,p/.47),Yk=Y-(1-roi_*roi_)*H*.9;ctx.save();ctx.translate(X,Yk);ctx.shadowColor='#ffd46b';ctx.shadowBlur=40;
+      const L=4.2*Z,Rg=.32*Z;const g=ctx.createLinearGradient(-Rg,0,Rg,0);g.addColorStop(0,'#fff6d0');g.addColorStop(.5,'#ffd46b');g.addColorStop(1,'#b8860b');ctx.fillStyle=g;ctx.globalAlpha=p>.8?(1-p)/.2:1;
+      ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-Rg,-L*.25);ctx.lineTo(-Rg,-L);ctx.lineTo(Rg,-L);ctx.lineTo(Rg,-L*.25);ctx.closePath();ctx.fill();
+      ctx.fillStyle='#ffe9a0';ctx.fillRect(-Rg*3,-L-8,Rg*6,14);ctx.fillStyle='#7a4a10';ctx.fillRect(-Rg*.6,-L-60,Rg*1.2,52);ctx.restore()}}
+  ctx.globalCompositeOperation='source-over';
+  // tên đồ dưới cột sáng (như game nhập vai săn đồ), máu quái
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  for(const o of roi)if(o.k==='do'&&o.bay>=1&&o.t>=2){const [X,Y]=S(o.cx,o.cy);ctx.font=`800 ${o.t>=5?13:11}px "Baloo 2",sans-serif`;const w=ctx.measureText(o.ten).width+10;
+    ctx.fillStyle='rgba(6,6,12,.78)';ctx.fillRect(X-w/2,Y+8,w,17);ctx.fillStyle=RAR[o.t].c;ctx.fillText(o.ten,X,Y+17)}
+  for(const q of quai)if(!q.chet&&q.ra<=0&&(q.mau<q.max||q.trum)){const [X,Y]=S(q.x,q.y,(q.trum?3.4:1.3)),w=q.trum?150:34;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(X-w/2-1,Y-1,w+2,q.trum?8:5);ctx.fillStyle=q.trum?'#ff4a3a':'#ff7a4a';ctx.fillRect(X-w/2,Y,w*Math.max(0,q.mau/q.max),q.trum?6:3);
+    if(q.trum){ctx.font='800 14px "Baloo 2",sans-serif';ctx.fillStyle='#ffd46b';ctx.fillText('TRÙM · '+MQ[q.ty].n,X,Y-11)}}
+  // số sát thương, chữ nổi
+  for(const c of chu){const p=c.T/c.dai,[X,Y]=S(c.x+c.dx*p,c.y,c.z+p*1.2);const s=c.kieu==='cm'?(p<.15?1+(.15-p)*6:1):1;ctx.font=`800 ${c.co*s}px "Baloo 2",sans-serif`;ctx.globalAlpha=p>.7?(1-p)/.3:1;
+    ctx.lineWidth=4;ctx.strokeStyle='#1a0e04';ctx.strokeText(c.t,X,Y);ctx.fillStyle=c.c;ctx.fillText(c.t,X,Y)}ctx.globalAlpha=1;
+  // lời Rùa Vàng
+  if(rua.noiT>0){const [X,Y]=S(rua.x,rua.y,1.2);ctx.font='600 13px "Baloo 2",sans-serif';const ds2=boDong(rua.noi,200),w=Math.max(...ds2.map(t=>ctx.measureText(t).width))+18,h=ds2.length*16+10;
+    ctx.globalAlpha=Math.min(1,rua.noiT*2);ctx.fillStyle='rgba(255,248,225,.95)';ctx.strokeStyle='#b08a3c';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(X-w/2,Y-h-10,w,h,9);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(X-6,Y-10);ctx.lineTo(X,Y-2);ctx.lineTo(X+6,Y-10);ctx.fill();ctx.fillStyle='#3a2408';ds2.forEach((t,i)=>ctx.fillText(t,X,Y-h-2+i*16+8));ctx.globalAlpha=1}
+  // dòng chữ to giữa màn
+  if(banner){const p=banner.T/banner.d,s=p<.12?1.6-p*5:1;ctx.save();ctx.translate(W/2,H*(banner.nho?.2:.3));ctx.scale(s,s);ctx.globalAlpha=p>.75?(1-p)/.25:1;
+    let fs=banner.nho?30:42;ctx.font=`800 ${fs}px "Baloo 2",sans-serif`;const bw=ctx.measureText(banner.t).width;if(bw>W*.86){fs*=W*.86/bw;ctx.font=`800 ${fs}px "Baloo 2",sans-serif`}ctx.lineWidth=7;ctx.strokeStyle='#160a02';ctx.strokeText(banner.t,0,0);ctx.shadowColor=banner.c;ctx.shadowBlur=24;ctx.fillStyle=banner.c;ctx.fillText(banner.t,0,0);ctx.restore()}
+  if(lienHoan>=5){ctx.font='800 20px "Baloo 2",sans-serif';ctx.textAlign='right';ctx.lineWidth=5;ctx.strokeStyle='#160a02';const t='LIÊN HOÀN x'+lienHoan;ctx.strokeText(t,W-140,H*.42);ctx.fillStyle='#ffb04a';ctx.fillText(t,W-140,H*.42);ctx.textAlign='center'}
+  if(flash>0){ctx.fillStyle=`rgba(${flashC},${flash*.35})`;ctx.fillRect(0,0,W,H)}
+  // viền tối quanh màn
+  const vg=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.75);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.55)');ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
+  veBanDo();
+}
+function boDong(t,w){ctx.font='600 13px "Baloo 2",sans-serif';const tu=t.split(' '),ds=[];let d='';for(const x of tu){if(ctx.measureText(d+' '+x).width>w&&d){ds.push(d);d=x}else d=d?d+' '+x:x}ds.push(d);return ds}
+const mm=$('mm'),mc=mm.getContext('2d');
+function veBanDo(){mc.setTransform(1,0,0,1,0,0);mc.clearRect(0,0,236,236);const k=236/MAPW/1.45,P=(x,y)=>[118+(x-y)*k*.707*1.0,118+(x+y-MAPW)*k*.707*.5+0];
+  mc.save();mc.translate(0,0);mc.fillStyle='rgba(40,70,40,.55)';mc.beginPath();for(const [x,y] of [[0,0],[MAPW,0],[MAPW,MAPW],[0,MAPW]]){const [a,b]=P(x,y);mc.lineTo(a,b)}mc.fill();
+  const cham=(x,y,c,r)=>{const [a,b]=P(x,y);mc.fillStyle=c;mc.beginPath();mc.arc(a,b,r,0,7);mc.fill()};
+  for(const l of den)cham(l.x,l.y,'#ff9a4a',3);for(const o of roi)if(o.k==='do')cham(o.cx??o.x,o.cy??o.y,RAR[o.t].c,3);
+  for(const q of quai)if(!q.chet)cham(q.x,q.y,q.trum?'#ff3a3a':'#ff7a6a',q.trum?7:3);cham(hero.x,hero.y,'#fff',5);mc.restore()}
+
+/* ---------- giao diện ---------- */
+function capNhatUI(){
+  $('ten').textContent=LOP[G.lop].n;$('cap').textContent='Cấp '+G.cap;$('xp').style.width=Math.min(100,G.xp/(40+G.cap*30)*100)+'%';
+  $('vang').textContent='Vàng '+G.vang+' · Hạ '+G.ha;
+  $('hp').querySelector('i').style.height=(hero.hp/hero.mhp*100)+'%';$('hp').querySelector('span').textContent=Math.ceil(hero.hp);
+  $('mp').querySelector('i').style.height=hero.mp+'%';$('mp').querySelector('span').textContent=hero.mp>=100?'ĐẦY':Math.floor(hero.mp);$('mp').classList.toggle('day',hero.mp>=100);
+  $('k1').querySelector('.cd').style.setProperty('--p',(hero.cd1/(G.lop==='cb'?4:5)*100)+'%');$('k1t').textContent=LOP[G.lop].k1;
+  $('ult').querySelector('.cd').style.setProperty('--p',(100-hero.mp)+'%');$('ult').classList.toggle('san',hero.mp>=100);
+  document.querySelectorAll('.lop button').forEach(b=>b.classList.toggle('on',b.dataset.l===G.lop));
+  $('auto').classList.toggle('on',tuDanh);$('auto').innerHTML='TỰ ĐÁNH<br>'+(tuDanh?'BẬT':'TẮT')}
+$('auto').onclick=()=>{tuDanh=!tuDanh};$('k1').onclick=()=>{amKhoi();kyNang()};$('ult').onclick=()=>{amKhoi();tuyetKy()};
+$('am').onclick=()=>{amBat=!amBat;$('am').textContent='Âm thanh: '+(amBat?'bật':'tắt')};
+document.querySelectorAll('.lop button').forEach(b=>b.onclick=()=>{G.lop=b.dataset.l;veDo();luu();noi(LOP[G.lop].n+'? Hay lắm, bảo khí sẽ theo ngươi.')});
+cv.addEventListener('pointerdown',e=>{amKhoi();keo={x0:e.clientX,y0:e.clientY,dx:0,dy:0};cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{if(keo){keo.dx=e.clientX-keo.x0;keo.dy=e.clientY-keo.y0}});
+cv.addEventListener('pointerup',()=>{keo=null});cv.addEventListener('pointercancel',()=>{keo=null});
+addEventListener('keydown',e=>{phim[e.key.length===1?e.key.toLowerCase():e.key]=true;if(e.key==='1')kyNang();if(e.key===' ')tuyetKy();if(e.key==='f')tuDanh=!tuDanh});
+addEventListener('keyup',e=>{phim[e.key.length===1?e.key.toLowerCase():e.key]=false});
+
+/* ---------- bắt đầu ---------- */
+let truoc=0,chay=false;
+function khung(ts){const dt=Math.min(.05,(ts-truoc)/1000||0);truoc=ts;if(chay){buoc(dt);ve();capNhatUI()}requestAnimationFrame(khung)}
+function batDau(){if(chay)return;chay=true;$('intro').hidden=true;amKhoi();taoMap();veDo();for(let i=0;i<3;i++)sinhBay();
+  banner={t:'RỪNG TRÚC · ĐÊM',c:'#cfe8b8',d:2.6,T:0};setTimeout(()=>noi('Ta là Kim Quy. Theo ta gom lại các mảnh bảo khí nào! Kéo tay để đi, còn không cứ để ngươi tự đánh.'),1200)}
+// chữ mở đầu hiện lần lượt; ảnh tải xong mới cho bắt đầu
+const cau=[...document.querySelectorAll('#intro p')];cau.forEach((p,i)=>setTimeout(()=>p.classList.add('on'),400+i*1500));
+const can=['dat','canh',...['cb','ct','ps'].flatMap(l=>['se','ne'].flatMap(h=>['than','m0','m1','m2','m3','vk0','vk1','vk2','vk3'].map(t=>`${l}_${h}_${t}`))),...['nhay','nam','doi','hon','rong'].flatMap(q=>['se','ne'].map(h=>`q_${q}_${h}`))];
+const cho=setInterval(()=>{const xx=can.map(anh).filter(xong).length;$('bat').textContent=xx<can.length?`Đang tải hình… ${Math.round(xx/can.length*100)}%`:'Chạm để bắt đầu';if(xx>=can.length)clearInterval(cho)},200);
+$('intro').onclick=()=>{if(can.map(anh).every(xong))batDau()};
+window.__thu=(k)=>{if(k==='batdau')batDau();if(k==='do'){G.eq=[6,6,6,6,6,6];veDo()}if(k==='trum')goiTrum();if(k==='day')hero.mp=100;if(k==='ps'||k==='ct'||k==='cb'){G.lop=k}};
+requestAnimationFrame(khung);
+</script>
+</body>
+</html>
